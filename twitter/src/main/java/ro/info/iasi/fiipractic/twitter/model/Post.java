@@ -3,19 +3,16 @@ package ro.info.iasi.fiipractic.twitter.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "posts")
 public class Post {
-
     @Id
     @GeneratedValue
     @UuidGenerator
     private UUID id;
-
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -23,6 +20,9 @@ public class Post {
     private String message;
 
     private long timestamp;
+
+    @OneToMany(mappedBy = "parentPost", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reply> replies;
 
     public Post() {
 
