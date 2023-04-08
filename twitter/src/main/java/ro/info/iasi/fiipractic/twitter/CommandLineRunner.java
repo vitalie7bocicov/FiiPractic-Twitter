@@ -2,12 +2,9 @@ package ro.info.iasi.fiipractic.twitter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.info.iasi.fiipractic.twitter.model.*;
 import ro.info.iasi.fiipractic.twitter.model.Follow.Follow;
 import ro.info.iasi.fiipractic.twitter.model.Follow.FollowId;
-import ro.info.iasi.fiipractic.twitter.model.Like;
-import ro.info.iasi.fiipractic.twitter.model.Mention;
-import ro.info.iasi.fiipractic.twitter.model.Post;
-import ro.info.iasi.fiipractic.twitter.model.User;
 import ro.info.iasi.fiipractic.twitter.service.*;
 
 @Component
@@ -27,6 +24,9 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
 
     @Autowired
     MentionService mentionService;
+
+    @Autowired
+    ReplyService replyService;
 
     public User getUser(){
         return new User("Vitalie", "Bocicov", "1234", "vitalie@gmail.com");
@@ -54,6 +54,11 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
         Mention mention = new Mention(user, post);
         mentionService.saveMention(mention);
         mentionService.saveMention(mention);
+
+        Reply reply = new Reply(user, "Hello", System.currentTimeMillis(), post, true);
+        replyService.saveReply(reply);
+        Reply reply2 = new Reply(savedFollower, "Hello2", System.currentTimeMillis(), post, false);
+        replyService.saveReply(reply2);
 
     }
 }
