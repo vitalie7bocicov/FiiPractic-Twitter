@@ -1,11 +1,12 @@
 package ro.info.iasi.fiipractic.twitter.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UuidGenerator;
+import ro.info.iasi.fiipractic.twitter.model.Follow.Follow;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -65,6 +66,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
 
     @Override
     public String toString() {

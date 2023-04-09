@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 public class Reply extends Post{
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_post_id", referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_reply_post_parent",
+                    foreignKeyDefinition = "FOREIGN KEY (parent_post_id) REFERENCES posts(id) ON DELETE CASCADE"))
     private Post parentPost;
 
     private boolean isPublic;

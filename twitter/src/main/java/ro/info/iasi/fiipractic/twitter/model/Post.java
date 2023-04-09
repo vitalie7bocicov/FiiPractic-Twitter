@@ -2,9 +2,12 @@ package ro.info.iasi.fiipractic.twitter.model;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
+import ro.info.iasi.fiipractic.twitter.model.Follow.Follow;
 
 import java.util.List;
 import java.util.UUID;
+
+import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
 @Entity
 @Table(name = "posts")
@@ -13,8 +16,10 @@ public class Post {
     @GeneratedValue
     @UuidGenerator
     private UUID id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_post_user",
+                    foreignKeyDefinition = "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"))
     private User user;
 
     private String message;
@@ -25,7 +30,6 @@ public class Post {
     private List<Reply> replies;
 
     public Post() {
-
     }
 
     public User getUser() {

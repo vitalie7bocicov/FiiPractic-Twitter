@@ -10,12 +10,18 @@ public class Follow {
     @EmbeddedId
     private FollowId id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
+    @JoinColumn(name = "user_id", referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_follow_user",
+                    foreignKeyDefinition = "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"))
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("followingId")
+    @JoinColumn(name = "following_id", referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_follow_following",
+                    foreignKeyDefinition = "FOREIGN KEY (following_id) REFERENCES users(id) ON DELETE CASCADE"))
     private User following;
 
     private long timestamp;

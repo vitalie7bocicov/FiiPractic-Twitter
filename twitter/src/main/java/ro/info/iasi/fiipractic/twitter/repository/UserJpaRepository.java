@@ -7,4 +7,5 @@ import ro.info.iasi.fiipractic.twitter.model.User;
 import java.util.UUID;
 @Repository
 public interface UserJpaRepository extends JpaRepository<User, UUID> {
+    User findByFirstname(String firstname);
 }
