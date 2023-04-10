@@ -17,6 +17,7 @@ public class User {
     @UuidGenerator
     private UUID id;
 
+    @Column(unique=true)
     private String username;
     private String firstname;
     private String lastname;

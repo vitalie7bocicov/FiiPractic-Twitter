@@ -1,10 +1,10 @@
-package ro.info.iasi.fiipractic.twitter.dto;
+package ro.info.iasi.fiipractic.twitter.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class UserDto {
+public class UserRequestDto {
 
     @NotBlank(message = "Username is required.")
     @Size(min=3, message = "Username must be at least 3 characters long.")
@@ -25,7 +25,7 @@ public class UserDto {
     @Size(min=8, message = "Password must be at least 8 characters long.")
     private String password;
 
-    public UserDto(String username, String firstname, String lastname, String email, String password) {
+    public UserRequestDto(String username, String firstname, String lastname, String email, String password) {
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
