@@ -16,6 +16,8 @@ public class User {
     @GeneratedValue
     @UuidGenerator
     private UUID id;
+
+    private String username;
     private String firstname;
     private String lastname;
     private String email;
@@ -24,7 +26,8 @@ public class User {
     public User() {
     }
 
-    public User(String firstname, String lastname, String email, String password) {
+    public User(String username, String firstname, String lastname, String email, String password) {
+        this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -33,6 +36,14 @@ public class User {
 
     public UUID getId() {
         return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstname() {

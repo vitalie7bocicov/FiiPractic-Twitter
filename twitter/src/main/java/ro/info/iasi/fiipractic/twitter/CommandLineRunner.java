@@ -31,9 +31,6 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
     @Autowired
     ReplyService replyService;
 
-    public User getUser(){
-        return new User("Vitalie", "Bocicov", "vitalie@gmail.com", "pass123");
-    }
 
     public Post getPost(User user, String message){
         return new Post(user, message, System.currentTimeMillis());
@@ -64,7 +61,7 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
 //        replyService.saveReply(reply2);
 //        User user = userService.getByFirstname("Vitalie");
 //        System.out.println(user);
-        List<Post> usersPosts = postService.getPostsByUserId(UUID.fromString("07c298fd-fe1e-4d60-80f3-ead2fda3ed07"));
-        System.out.println(usersPosts);
+//        List<Post> usersPosts = postService.getPostsByUserId(UUID.fromString("07c298fd-fe1e-4d60-80f3-ead2fda3ed07"));
+//        System.out.println(usersPosts);
     }
 }

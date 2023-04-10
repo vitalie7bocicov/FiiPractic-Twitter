@@ -3,7 +3,6 @@ package ro.info.iasi.fiipractic.twitter.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table (name = "replies")
 public class Reply extends Post{
 
     @ManyToOne(fetch = FetchType.LAZY)
