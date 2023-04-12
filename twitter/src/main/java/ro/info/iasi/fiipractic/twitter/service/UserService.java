@@ -39,11 +39,11 @@ public class UserService {
     }
 
     public List<User> searchUsers(String username, String firstname, String lastname) {
-        System.out.println("SEARCH USERS");
         List<User> foundUsers =
                 userRepository.findByUsernameContainingOrFirstnameContainingOrLastnameContaining(username, firstname, lastname);
         if(foundUsers == null || foundUsers.isEmpty())
             throw new UserNotFoundException("No users found with the specified search criteria.");
         return foundUsers;
     }
+
 }

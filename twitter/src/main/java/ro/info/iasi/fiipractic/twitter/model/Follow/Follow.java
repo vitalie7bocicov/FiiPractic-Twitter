@@ -18,21 +18,21 @@ public class Follow {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("followingId")
-    @JoinColumn(name = "following_id", referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_follow_following",
-                    foreignKeyDefinition = "FOREIGN KEY (following_id) REFERENCES users(id) ON DELETE CASCADE"))
-    private User following;
+    @MapsId("followedId")
+    @JoinColumn(name = "followed_id", referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_follow_followed",
+                    foreignKeyDefinition = "FOREIGN KEY (followed_id) REFERENCES users(id) ON DELETE CASCADE"))
+    private User followed;
 
     private long timestamp;
 
     public Follow() {
     }
 
-    public Follow(FollowId id, User user, User following, long timestamp) {
+    public Follow(FollowId id, User user, User followed, long timestamp) {
         this.id = id;
         this.user = user;
-        this.following = following;
+        this.followed = followed;
         this.timestamp = timestamp;
     }
 
@@ -52,12 +52,12 @@ public class Follow {
         this.user = user;
     }
 
-    public User getFollowing() {
-        return following;
+    public User getFollowed() {
+        return followed;
     }
 
     public void setFollowing(User following) {
-        this.following = following;
+        this.followed = followed;
     }
 
     public long getTimestamp() {

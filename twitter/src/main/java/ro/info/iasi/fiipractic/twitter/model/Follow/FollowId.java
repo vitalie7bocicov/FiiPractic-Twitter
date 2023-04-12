@@ -11,19 +11,27 @@ public class FollowId implements Serializable {
 
     private UUID userId;
 
-    private UUID followingId;
+    private UUID followedId;
+
+    public FollowId() {
+    }
+
+    public FollowId(UUID userId, UUID followed) {
+        this.userId = userId;
+        this.followedId = followed;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FollowId followId = (FollowId) o;
-        return Objects.equals(userId, followId.userId) && Objects.equals(followingId, followId.followingId);
+        return Objects.equals(userId, followId.userId) && Objects.equals(followedId, followId.followedId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, followingId);
+        return Objects.hash(userId, followedId);
     }
 
     public UUID getUserId() {
@@ -34,11 +42,11 @@ public class FollowId implements Serializable {
         this.userId = userId;
     }
 
-    public UUID getFollowingId() {
-        return followingId;
+    public UUID getFollowedId() {
+        return followedId;
     }
 
-    public void setFollowingId(UUID followingId) {
-        this.followingId = followingId;
+    public void setFollowedId(UUID followingId) {
+        this.followedId = followedId;
     }
 }

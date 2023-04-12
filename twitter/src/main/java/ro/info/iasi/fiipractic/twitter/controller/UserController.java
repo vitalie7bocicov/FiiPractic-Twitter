@@ -3,9 +3,12 @@ package ro.info.iasi.fiipractic.twitter.controller;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ro.info.iasi.fiipractic.twitter.dto.request.FollowRequestDto;
 import ro.info.iasi.fiipractic.twitter.dto.request.UserRequestDto;
 import ro.info.iasi.fiipractic.twitter.dto.response.UserResponseDto;
+import ro.info.iasi.fiipractic.twitter.exception.FollowRelationshipAlreadyExistsException;
 import ro.info.iasi.fiipractic.twitter.model.User;
+import ro.info.iasi.fiipractic.twitter.service.FollowService;
 import ro.info.iasi.fiipractic.twitter.service.UserService;
 
 import java.util.List;
@@ -16,9 +19,11 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private UserService userService;
+    private FollowService followService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, FollowService followService) {
         this.userService = userService;
+        this.followService = followService;
     }
 
     @PostMapping("/register")
@@ -44,5 +49,17 @@ public class UserController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(users);
+    }
+
+    @PostMapping("/follow")
+    public ResponseEntity<String> followUser(@Valid @RequestBody FollowRequestDto followRequestDto){
+        String username = followRequestDto.getUsername();
+        String usernameToFollow = followRequestDto.getUsernameToFollow();
+        try {
+            followService.saveFollow(username, usernameToFollow);
+            return ResponseEntity.ok("'" + username +"' is now following '" + usernameToFollow +"'.");
+        } catch (FollowRelationshipAlreadyExistsException e) {
+            return ResponseEntity.ok("The follow relationship between '" + username + "' and '" + usernameToFollow + "' already exists.");
+        }
     }
 }
