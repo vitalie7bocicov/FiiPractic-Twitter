@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.info.iasi.fiipractic.twitter.dto.request.FollowRequestDto;
 import ro.info.iasi.fiipractic.twitter.dto.request.UnfollowRequestDto;
+import ro.info.iasi.fiipractic.twitter.dto.request.UserPasswordRequestDto;
 import ro.info.iasi.fiipractic.twitter.dto.request.UserRequestDto;
 import ro.info.iasi.fiipractic.twitter.dto.response.UserResponseDto;
 import ro.info.iasi.fiipractic.twitter.exception.FollowRelationshipAlreadyExistsException;
@@ -46,9 +47,7 @@ public class UserController {
         user.setLastname(userRequestDto.getLastname());
         user.setEmail(userRequestDto.getEmail());
         user.setPassword(userRequestDto.getPassword());
-
         userService.updateUser(user);
-
         return ResponseEntity.ok("User " + user.getUsername() + " has been successfully updated!");
     }
 
@@ -67,25 +66,34 @@ public class UserController {
 
     @PostMapping("/follow")
     public ResponseEntity<String> followUser(@Valid @RequestBody FollowRequestDto followRequestDto){
-        String username = followRequestDto.getUsername();
-        String usernameToFollow = followRequestDto.getUsernameToFollow();
+        User user = userService.getByUsername(followRequestDto.getUsername());
+        User followed = userService.getByUsername(followRequestDto.getUsernameToFollow());
         try {
-            followService.saveFollow(username, usernameToFollow);
-            return ResponseEntity.ok("'" + username +"' is now following '" + usernameToFollow +"'.");
+            followService.saveFollow(user, followed);
+            return ResponseEntity.ok("'" + user.getUsername() +"' is now following '"
+                    + followed.getUsername() +"'.");
         } catch (FollowRelationshipAlreadyExistsException e) {
-            return ResponseEntity.ok("The follow relationship between '" + username + "' and '" + usernameToFollow + "' already exists.");
+            return ResponseEntity.ok("The follow relationship between '"
+                    + user.getUsername() + "' and '" + followed.getUsername() + "' already exists.");
         }
     }
 
     @PostMapping("/unfollow")
     public ResponseEntity<String> unfollowUser(@Valid @RequestBody UnfollowRequestDto unFollowRequestDto){
-        String username = unFollowRequestDto.getUsername();
-        String usernameToUnfollow = unFollowRequestDto.getUsernameToUnfollow();
-        followService.unFollow(username, usernameToUnfollow);
-        return ResponseEntity.ok("'" + username +"' successfully unfollowed '" + usernameToUnfollow +"'.");
+        User user = userService.getByUsername(unFollowRequestDto.getUsername());
+        User followed = userService.getByUsername(unFollowRequestDto.getUsernameToUnfollow());
+        followService.unFollow(user, followed);
+        return ResponseEntity.ok("'" + user.getUsername()
+                +"' successfully unfollowed '" + followed.getUsername() +"'.");
     }
 
-
+    @PatchMapping("/security")
+    public ResponseEntity<String> changePassword(@Valid @RequestBody UserPasswordRequestDto userRequestDto){
+        User user = userService.getByUsername(userRequestDto.getUsername());
+        user.setPassword(userRequestDto.getPassword());
+        userService.updateUser(user);
+        return ResponseEntity.ok("The password for '" + user.getUsername() + "' has been successfully updated!");
+    }
 
     @DeleteMapping("unregister")
     public ResponseEntity<String> unregisterUser(@RequestParam String username){

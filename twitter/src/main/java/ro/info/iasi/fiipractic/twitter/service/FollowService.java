@@ -25,15 +25,9 @@ public class FollowService {
         this.userRepository = userRepository;
     }
 
-    public Follow saveFollow(String username, String usernameToFollow){
-        if (username.equals(usernameToFollow))
+    public Follow saveFollow(User user, User followed){
+        if (user.getUsername().equals(followed.getUsername()))
             throw new BadRequestException(" You cannot follow yourself. Please select a different user to follow.");
-        User user = userRepository.findByUsername(username);
-        User followed = userRepository.findByUsername(usernameToFollow);
-        if (user == null)
-            throw new UserNotFoundException("User with username '" + username + "' not found.");
-        if (followed == null)
-            throw new UserNotFoundException("User with username '" + usernameToFollow + "' not found.");
         if (followRepository.findFollowByUserAndFollowed(user, followed) != null)
             throw new FollowRelationshipAlreadyExistsException();
         FollowId followId = new FollowId(user.getId(), followed.getId());
@@ -46,12 +40,11 @@ public class FollowService {
         return follows.stream().map(Follow::getFollowed).collect(Collectors.toList());
     }
 
-    public void unFollow(String username, String usernameToUnfollow) {
-        User user = userRepository.findByUsername(username);
-        User followed = userRepository.findByUsername(usernameToUnfollow);
+    public void unFollow(User user, User followed) {
         Follow follow = followRepository.findFollowByUserAndFollowed(user, followed);
         if (follow == null)
-            throw new FollowRelationshipNotFound("'" + username + "' is not following '" + usernameToUnfollow + "'.");
+            throw new FollowRelationshipNotFound("'" + user.getUsername() +
+                    "' is not following '" + followed.getUsername() + "'.");
         followRepository.delete(follow);
     }
 }
