@@ -3,7 +3,7 @@ package ro.info.iasi.fiipractic.twitter.controller;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ro.info.iasi.fiipractic.twitter.dto.request.DeletePostRequestDto;
+import ro.info.iasi.fiipractic.twitter.dto.request.PostCRUDRequestDto;
 import ro.info.iasi.fiipractic.twitter.dto.request.PostRequestDto;
 import ro.info.iasi.fiipractic.twitter.dto.response.PostResponseDto;
 import ro.info.iasi.fiipractic.twitter.model.Post;
@@ -12,16 +12,13 @@ import ro.info.iasi.fiipractic.twitter.service.PostService;
 import ro.info.iasi.fiipractic.twitter.service.UserService;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(("/posts"))
 public class PostController {
-    private UserService userService;
-    private PostService postService;
+    private final UserService userService;
+    private final PostService postService;
 
     public PostController(UserService userService, PostService postService) {
         this.userService = userService;
@@ -36,8 +33,17 @@ public class PostController {
         return ResponseEntity.ok("The post has been successfully created!");
     }
 
+    @PostMapping("/repost")
+    public ResponseEntity<String> repost(@RequestBody PostCRUDRequestDto postDto){
+        User user = userService.getByUsername(postDto.getUsername());
+        Post post = postService.getPostById(postDto.getPostId());
+        Post repostedPost = new Post(user, post.getMessage(), System.currentTimeMillis());
+        postService.savePost(repostedPost);
+        return ResponseEntity.ok("The post has been successfully reposted!");
+    }
+
     @DeleteMapping
-    public ResponseEntity<String> deletePost(@RequestBody DeletePostRequestDto deletePostDto){
+    public ResponseEntity<String> deletePost(@RequestBody PostCRUDRequestDto deletePostDto){
         User user = userService.getByUsername(deletePostDto.getUsername());
         Post post = postService.getPostById(deletePostDto.getPostId());
         postService.deletePost(user, post);

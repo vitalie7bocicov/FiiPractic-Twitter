@@ -4,16 +4,16 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.util.UUID;
 
-public class DeletePostRequestDto {
+public class PostCRUDRequestDto {
 
     @NotBlank(message = "username is required.")
-    private String username;
+    private final String username;
 
     @NotBlank(message = "postId is required.")
-    private UUID postId;
+    private final UUID postId;
 
 
-    public DeletePostRequestDto(String username, UUID postId) {
+    public PostCRUDRequestDto(String username, UUID postId) {
         this.username = username;
         this.postId = postId;
     }
