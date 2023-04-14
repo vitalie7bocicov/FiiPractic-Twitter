@@ -71,4 +71,11 @@ public class UserController {
         followService.unFollow(username, usernameToUnfollow);
         return ResponseEntity.ok("'" + username +"' successfully unfollowed '" + usernameToUnfollow +"'.");
     }
+
+    @DeleteMapping("unregister")
+    public ResponseEntity<String> unregisterUser(@RequestParam String username){
+        User user = userService.getByUsername(username);
+        userService.deleteUser(user);
+        return ResponseEntity.ok("'" + username + "' successfully unregistered!");
+    }
 }

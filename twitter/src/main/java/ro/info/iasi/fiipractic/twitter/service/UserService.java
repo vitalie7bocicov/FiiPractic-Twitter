@@ -48,4 +48,8 @@ public class UserService {
             throw new UserNotFoundException("No users found with the specified search criteria.");
         return foundUsers;
     }
+
+    public void deleteUser(User user) {
+        userRepository.delete(user);
+    }
 }
