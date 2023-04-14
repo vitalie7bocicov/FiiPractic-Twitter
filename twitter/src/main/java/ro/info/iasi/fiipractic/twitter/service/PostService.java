@@ -1,6 +1,8 @@
 package ro.info.iasi.fiipractic.twitter.service;
 
 import org.springframework.stereotype.Service;
+import ro.info.iasi.fiipractic.twitter.exception.UnauthorizedException;
+import ro.info.iasi.fiipractic.twitter.exception.NotFoundException;
 import ro.info.iasi.fiipractic.twitter.model.Post;
 import ro.info.iasi.fiipractic.twitter.model.User;
 import ro.info.iasi.fiipractic.twitter.repository.PostJpaRepository;
@@ -8,6 +10,7 @@ import ro.info.iasi.fiipractic.twitter.repository.PostJpaRepository;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PostService {
@@ -44,5 +47,20 @@ public class PostService {
         feed.sort(byTimestampDesc);
 
         return feed;
+    }
+
+    public Post getPostById(UUID postId) {
+        Post post = postJpaRepository.getPostById(postId);
+
+        if(post == null)
+            throw new NotFoundException("Post with id '" + postId + "' not found.");
+        return postJpaRepository.getPostById(postId);
+    }
+
+    public void deletePost(User user, Post post) {
+        if (user.getId().compareTo(post.getUser().getId())!=0){
+            throw new UnauthorizedException();
+        }
+        postJpaRepository.delete(post);
     }
 }

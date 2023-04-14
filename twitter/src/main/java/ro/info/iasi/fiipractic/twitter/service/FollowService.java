@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import ro.info.iasi.fiipractic.twitter.exception.BadRequestException;
 import ro.info.iasi.fiipractic.twitter.exception.FollowRelationshipAlreadyExistsException;
 import ro.info.iasi.fiipractic.twitter.exception.FollowRelationshipNotFound;
-import ro.info.iasi.fiipractic.twitter.exception.UserNotFoundException;
 import ro.info.iasi.fiipractic.twitter.model.Follow.Follow;
 import ro.info.iasi.fiipractic.twitter.model.Follow.FollowId;
 import ro.info.iasi.fiipractic.twitter.model.User;

@@ -3,6 +3,7 @@ package ro.info.iasi.fiipractic.twitter.controller;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ro.info.iasi.fiipractic.twitter.dto.request.DeletePostRequestDto;
 import ro.info.iasi.fiipractic.twitter.dto.request.PostRequestDto;
 import ro.info.iasi.fiipractic.twitter.dto.response.PostResponseDto;
 import ro.info.iasi.fiipractic.twitter.model.Post;
@@ -13,6 +14,7 @@ import ro.info.iasi.fiipractic.twitter.service.UserService;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,8 +33,15 @@ public class PostController {
         User user = userService.getByUsername(postRequestDto.getUsername());
         Post post = new Post(user, postRequestDto.getMessage(), System.currentTimeMillis());
         postService.savePost(post);
+        return ResponseEntity.ok("The post has been successfully created!");
+    }
 
-        return ResponseEntity.ok("Post has been successfully created!");
+    @DeleteMapping
+    public ResponseEntity<String> deletePost(@RequestBody DeletePostRequestDto deletePostDto){
+        User user = userService.getByUsername(deletePostDto.getUsername());
+        Post post = postService.getPostById(deletePostDto.getPostId());
+        postService.deletePost(user, post);
+        return ResponseEntity.ok("The post has been deleted!");
     }
 
     @GetMapping
@@ -50,14 +59,14 @@ public class PostController {
             posts = postService.getPostsByUser(user);
         }
 
-        List<PostResponseDto> postResponseDtos = posts.stream()
-                .map(post -> new PostResponseDto(post.getUser().getUsername(),
+        List<PostResponseDto> postsResponseDto = posts.stream()
+                .map(post -> new PostResponseDto(post.getId(), post.getUser().getUsername(),
                         post.getMessage(),
                         post.getTimestamp())).toList();
-        if (postResponseDtos.isEmpty()){
+        if (postsResponseDto.isEmpty()){
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(postResponseDtos);
+        return ResponseEntity.ok(postsResponseDto);
     }
 
     @GetMapping("/feed")
@@ -65,7 +74,7 @@ public class PostController {
         User user = userService.getByUsername(username);
         List<Post> posts = postService.getFeed(user);
         List<PostResponseDto> postResponseDtos = posts.stream()
-                .map(post -> new PostResponseDto(post.getUser().getUsername(),
+                .map(post -> new PostResponseDto(post.getId(), post.getUser().getUsername(),
                         post.getMessage(),
                         post.getTimestamp())).toList();
         if (postResponseDtos.isEmpty()){

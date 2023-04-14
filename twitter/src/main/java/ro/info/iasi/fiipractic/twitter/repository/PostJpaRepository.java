@@ -19,4 +19,6 @@ public interface PostJpaRepository extends JpaRepository<Post, UUID> {
 
     @Query("SELECT p FROM Post p WHERE p.user = :user AND p.timestamp > :timestamp")
     List<Post> getPostsByUserWithTimeFilter(@Param("user") User user, @Param("timestamp") long timestamp);
+
+    Post getPostById(UUID postId);
 }
