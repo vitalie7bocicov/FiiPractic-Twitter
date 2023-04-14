@@ -13,9 +13,12 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+    private final UserJpaRepository userRepository;
+    public UserService(UserJpaRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-    @Autowired
-    private UserJpaRepository userRepository;
+
     public User saveUser(User user){
 
         if(userRepository.findByUsername(user.getUsername())!=null)
@@ -45,5 +48,4 @@ public class UserService {
             throw new UserNotFoundException("No users found with the specified search criteria.");
         return foundUsers;
     }
-
 }

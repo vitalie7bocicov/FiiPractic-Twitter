@@ -8,8 +8,12 @@ import ro.info.iasi.fiipractic.twitter.repository.LikeJpaRepository;
 @Service
 public class LikeService {
 
-    @Autowired
-    LikeJpaRepository likeJpaRepository;
+
+    final LikeJpaRepository likeJpaRepository;
+
+    public LikeService(LikeJpaRepository likeJpaRepository) {
+        this.likeJpaRepository = likeJpaRepository;
+    }
 
     public Like saveLike(Like like){
         return likeJpaRepository.save(like);

@@ -10,6 +10,9 @@ import ro.info.iasi.fiipractic.twitter.model.User;
 import ro.info.iasi.fiipractic.twitter.repository.FollowJpaRepository;
 import ro.info.iasi.fiipractic.twitter.repository.UserJpaRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class FollowService {
 
@@ -35,6 +38,11 @@ public class FollowService {
         FollowId followId = new FollowId(user.getId(), followed.getId());
         Follow follow = new Follow(followId, user, followed, System.currentTimeMillis());
         return followRepository.save(follow);
+    }
+
+    public List<User> getFollowedUsers(User user) {
+        List<Follow> follows = followRepository.findByUser(user);
+        return follows.stream().map(Follow::getFollowed).collect(Collectors.toList());
     }
 
 }

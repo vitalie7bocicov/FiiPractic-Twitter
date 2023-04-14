@@ -6,7 +6,11 @@ import ro.info.iasi.fiipractic.twitter.model.Follow.Follow;
 import ro.info.iasi.fiipractic.twitter.model.Follow.FollowId;
 import ro.info.iasi.fiipractic.twitter.model.User;
 
+import java.util.List;
+
 @Repository
 public interface FollowJpaRepository extends JpaRepository<Follow, FollowId> {
     Follow findFollowByUserAndFollowed(User user, User followed);
+
+    List<Follow> findByUser(User user);
 }

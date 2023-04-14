@@ -1,33 +1,48 @@
 package ro.info.iasi.fiipractic.twitter.service;
 
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.info.iasi.fiipractic.twitter.model.Post;
 import ro.info.iasi.fiipractic.twitter.model.User;
 import ro.info.iasi.fiipractic.twitter.repository.PostJpaRepository;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class PostService {
 
-    @Autowired
-    private PostJpaRepository postJpaRepository;
+    private final PostJpaRepository postJpaRepository;
+
+    private final FollowService followService;
+    public PostService(PostJpaRepository postJpaRepository, FollowService followService) {
+        this.postJpaRepository = postJpaRepository;
+        this.followService = followService;
+    }
 
     public Post savePost(Post post){
         return postJpaRepository.save(post);
     }
 
     public List<Post> getPostsByUser(User user) {
-        Optional<List<Post>> usersPosts = Optional.ofNullable(postJpaRepository.getPostsByUser(user));
-        return usersPosts.orElse(null);
+        return postJpaRepository.getPostsByUser(user);
     }
 
-    public List<Post> getPostsByUserId(UUID id) {
-        Optional<List<Post>> usersPosts = Optional.ofNullable(postJpaRepository.getPostsByUserId(id));
-        return usersPosts.orElse(null);
+    public List<Post> getPostsByUserWithTimeFilter(User user, long timestamp) {
+        return postJpaRepository.getPostsByUserWithTimeFilter(user, timestamp);
+    }
+
+    public List<Post> getFeed(User user) {
+        List<User> followedUsers = followService.getFollowedUsers(user);
+        List<Post> feed = new ArrayList<>();
+        for(User followedUser : followedUsers){
+            List<Post> posts = postJpaRepository.getPostsByUser(followedUser);
+            feed.addAll(posts);
+        }
+
+        Comparator<Post> byTimestampDesc = Comparator.comparing(Post::getTimestamp).reversed();
+        feed.sort(byTimestampDesc);
+
+        return feed;
     }
 }

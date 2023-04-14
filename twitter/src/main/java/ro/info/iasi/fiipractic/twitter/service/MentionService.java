@@ -7,8 +7,12 @@ import ro.info.iasi.fiipractic.twitter.repository.MentionJpaRepository;
 
 @Service
 public class MentionService {
-    @Autowired
-    MentionJpaRepository mentionJpaRepository;
+
+    final MentionJpaRepository mentionJpaRepository;
+
+    public MentionService(MentionJpaRepository mentionJpaRepository) {
+        this.mentionJpaRepository = mentionJpaRepository;
+    }
 
     public Mention saveMention(Mention mention){
         return mentionJpaRepository.save(mention);

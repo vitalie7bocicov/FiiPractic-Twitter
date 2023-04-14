@@ -8,8 +8,12 @@ import ro.info.iasi.fiipractic.twitter.repository.ReplyJpaRepository;
 @Service
 public class ReplyService {
 
-    @Autowired
-    ReplyJpaRepository replyJpaRepository;
+    final ReplyJpaRepository replyJpaRepository;
+
+    public ReplyService(ReplyJpaRepository replyJpaRepository) {
+        this.replyJpaRepository = replyJpaRepository;
+    }
+
 
     public Reply saveReply(Reply reply){
         return replyJpaRepository.save(reply);
