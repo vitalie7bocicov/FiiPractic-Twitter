@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 public class UserController {
 
-    private UserService userService;
-    private FollowService followService;
+    private final UserService userService;
+    private final FollowService followService;
 
     public UserController(UserService userService, FollowService followService) {
         this.userService = userService;
@@ -36,7 +36,20 @@ public class UserController {
                 userRequestDto.getEmail());
         userService.saveUser(user);
 
-        return ResponseEntity.ok("User " + user.getId() + " has been registered successfully!");
+        return ResponseEntity.ok("User " + user.getUsername() + " has been registered successfully!");
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateUser(@Valid @RequestBody UserRequestDto userRequestDto){
+        User user = userService.getByUsername(userRequestDto.getUsername());
+        user.setFirstname(userRequestDto.getFirstname());
+        user.setLastname(userRequestDto.getLastname());
+        user.setEmail(userRequestDto.getEmail());
+        user.setPassword(userRequestDto.getPassword());
+
+        userService.updateUser(user);
+
+        return ResponseEntity.ok("User " + user.getUsername() + " has been successfully updated!");
     }
 
     @GetMapping("/search")
@@ -71,6 +84,8 @@ public class UserController {
         followService.unFollow(username, usernameToUnfollow);
         return ResponseEntity.ok("'" + username +"' successfully unfollowed '" + usernameToUnfollow +"'.");
     }
+
+
 
     @DeleteMapping("unregister")
     public ResponseEntity<String> unregisterUser(@RequestParam String username){

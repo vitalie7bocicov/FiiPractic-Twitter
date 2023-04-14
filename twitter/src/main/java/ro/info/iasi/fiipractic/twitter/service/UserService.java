@@ -52,4 +52,12 @@ public class UserService {
     public void deleteUser(User user) {
         userRepository.delete(user);
     }
+    @Transactional
+    public void updateUser(User user) {
+        userRepository.updateUser(user.getId(),
+                user.getFirstname(),
+                user.getLastname(),
+                user.getEmail(),
+                user.getPassword());
+    }
 }
