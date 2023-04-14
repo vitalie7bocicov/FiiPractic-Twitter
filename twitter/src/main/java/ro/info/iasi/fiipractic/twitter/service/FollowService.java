@@ -3,6 +3,7 @@ package ro.info.iasi.fiipractic.twitter.service;
 import org.springframework.stereotype.Service;
 import ro.info.iasi.fiipractic.twitter.exception.BadRequestException;
 import ro.info.iasi.fiipractic.twitter.exception.FollowRelationshipAlreadyExistsException;
+import ro.info.iasi.fiipractic.twitter.exception.FollowRelationshipNotFound;
 import ro.info.iasi.fiipractic.twitter.exception.UserNotFoundException;
 import ro.info.iasi.fiipractic.twitter.model.Follow.Follow;
 import ro.info.iasi.fiipractic.twitter.model.Follow.FollowId;
@@ -45,4 +46,12 @@ public class FollowService {
         return follows.stream().map(Follow::getFollowed).collect(Collectors.toList());
     }
 
+    public void unFollow(String username, String usernameToUnfollow) {
+        User user = userRepository.findByUsername(username);
+        User followed = userRepository.findByUsername(usernameToUnfollow);
+        Follow follow = followRepository.findFollowByUserAndFollowed(user, followed);
+        if (follow == null)
+            throw new FollowRelationshipNotFound("'" + username + "' is not following '" + usernameToUnfollow + "'.");
+        followRepository.delete(follow);
+    }
 }

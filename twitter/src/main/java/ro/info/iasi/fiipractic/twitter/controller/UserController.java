@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.info.iasi.fiipractic.twitter.dto.request.FollowRequestDto;
+import ro.info.iasi.fiipractic.twitter.dto.request.UnfollowRequestDto;
 import ro.info.iasi.fiipractic.twitter.dto.request.UserRequestDto;
 import ro.info.iasi.fiipractic.twitter.dto.response.UserResponseDto;
 import ro.info.iasi.fiipractic.twitter.exception.FollowRelationshipAlreadyExistsException;
@@ -61,5 +62,13 @@ public class UserController {
         } catch (FollowRelationshipAlreadyExistsException e) {
             return ResponseEntity.ok("The follow relationship between '" + username + "' and '" + usernameToFollow + "' already exists.");
         }
+    }
+
+    @PostMapping("/unfollow")
+    public ResponseEntity<String> unfollowUser(@Valid @RequestBody UnfollowRequestDto unFollowRequestDto){
+        String username = unFollowRequestDto.getUsername();
+        String usernameToUnfollow = unFollowRequestDto.getUsernameToUnfollow();
+        followService.unFollow(username, usernameToUnfollow);
+        return ResponseEntity.ok("'" + username +"' successfully unfollowed '" + usernameToUnfollow +"'.");
     }
 }
