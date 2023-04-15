@@ -5,12 +5,12 @@ import java.util.UUID;
 
 public class PostResponseDto {
 
-    private UUID id;
-    private String username;
+    private final UUID id;
+    private final String username;
 
-    private String message;
+    private final String message;
 
-    private Instant timestamp;
+    private final Instant timestamp;
 
     public PostResponseDto(UUID id, String username, String message, long timestamp) {
         this.id = id;
@@ -31,7 +31,4 @@ public class PostResponseDto {
         return message;
     }
 
-    public Instant getTimestamp() {
-        return timestamp;
-    }
 }

@@ -53,7 +53,7 @@ public class PostService {
         Post post = postJpaRepository.getPostById(postId);
 
         if(post == null)
-            throw new NotFoundException("Post with id '" + postId + "' not found.");
+            throw new NotFoundException("Post with id '" + postId + "' was not found.");
         return postJpaRepository.getPostById(postId);
     }
 

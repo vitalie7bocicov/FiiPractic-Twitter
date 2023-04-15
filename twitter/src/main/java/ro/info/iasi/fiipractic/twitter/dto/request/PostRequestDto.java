@@ -5,10 +5,15 @@ import jakarta.validation.constraints.NotBlank;
 public class PostRequestDto {
 
     @NotBlank(message = "username is required.")
-    private String username;
+    private final String username;
 
     @NotBlank(message = "message is required.")
-    private String message;
+    private final String message;
+
+    public PostRequestDto(String username, String message) {
+        this.username = username;
+        this.message = message;
+    }
 
     public String getUsername() {
         return username;

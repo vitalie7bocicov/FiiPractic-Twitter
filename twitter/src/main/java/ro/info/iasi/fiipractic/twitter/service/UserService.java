@@ -24,18 +24,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<User> getByFirstname(String firstname) {
-        List<User> users = userRepository.findByFirstname(firstname);
-        if(users == null || users.isEmpty())
-            throw new NotFoundException("User with firstname '" + firstname + "' not found.");
-        return users;
-    }
-
     public User getByUsername(String username) {
         User user = userRepository.findByUsername(username);
 
         if(user == null)
-            throw new NotFoundException("User with username '" + username + "' not found.");
+            throw new NotFoundException("User with username '" + username + "' was not found.");
         return user;
     }
 
