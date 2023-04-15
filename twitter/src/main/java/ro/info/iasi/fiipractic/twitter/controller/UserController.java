@@ -36,7 +36,6 @@ public class UserController {
                 userRequestDto.getEmail(),
                 userRequestDto.getEmail());
         userService.saveUser(user);
-
         return ResponseEntity.ok("User " + user.getUsername() + " has been registered successfully!");
     }
 
@@ -60,7 +59,6 @@ public class UserController {
         List<UserResponseDto> users = foundUsers.stream()
                 .map(user -> new UserResponseDto(user.getUsername(), user.getFirstname(), user.getLastname()))
                 .collect(Collectors.toList());
-
         return ResponseEntity.ok(users);
     }
 

@@ -47,18 +47,7 @@ public class ReplyController {
         User user = userService.getByUsername(replyDto.getUsername());
         Post post = postService.getPostById(replyDto.getPostId());
         List<Reply> replies = replyService.getRepliesByPost(post);
-        List<ReplyResponseDto> repliesDto = replies.stream()
-                .filter(reply -> reply.isPublic()
-                        || reply.getParentPost().getUser().getId().compareTo(user.getId())==0
-                        || reply.getUser().getId().compareTo(user.getId())==0)
-                .map(reply -> new ReplyResponseDto(
-                        reply.getId(),
-                        reply.getUser().getUsername(),
-                        reply.getMessage(),
-                        System.currentTimeMillis(),
-                        reply.getParentPost().getId(),
-                        reply.isPublic()))
-                .toList();
+        var repliesDto = replyService.getReplyResponseDtos(user, replies);
         if (replies.isEmpty()){
             return ResponseEntity.noContent().build();
         }

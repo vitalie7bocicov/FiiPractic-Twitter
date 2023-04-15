@@ -10,29 +10,23 @@ import ro.info.iasi.fiipractic.twitter.dto.response.PostResponseDto;
 import ro.info.iasi.fiipractic.twitter.model.Mention;
 import ro.info.iasi.fiipractic.twitter.model.Post;
 import ro.info.iasi.fiipractic.twitter.model.User;
-import ro.info.iasi.fiipractic.twitter.service.LikeService;
 import ro.info.iasi.fiipractic.twitter.service.MentionService;
 import ro.info.iasi.fiipractic.twitter.service.PostService;
 import ro.info.iasi.fiipractic.twitter.service.UserService;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(("/posts"))
 public class PostController {
     private final UserService userService;
     private final PostService postService;
-    private final LikeService likeService;
-
     private final MentionService mentionService;
 
-    public PostController(UserService userService, PostService postService, LikeService likeService, MentionService mentionService) {
+    public PostController(UserService userService, PostService postService, MentionService mentionService) {
         this.userService = userService;
         this.postService = postService;
-        this.likeService = likeService;
         this.mentionService = mentionService;
     }
 
@@ -75,20 +69,7 @@ public class PostController {
         else {
             posts = postService.getPostsByUser(user);
         }
-
-        List<PostLikesResponseDto> PostLikesResponseDto = new ArrayList<>();
-        for (Post post : posts) {
-            PostLikesResponseDto postLikesResponseDto = new PostLikesResponseDto(post.getId(),
-                    post.getUser().getUsername(),
-                    post.getMessage(),
-                    post.getTimestamp());
-            List<String> likes = likeService.getLikesByPost(post).stream()
-                            .map(like -> like.getUser().getUsername())
-                                    .collect(Collectors.toList());
-
-            postLikesResponseDto.setLikes(likes);
-            PostLikesResponseDto.add(postLikesResponseDto);
-        }
+        var PostLikesResponseDto = postService.getPostsWithLikes(posts);
         if (PostLikesResponseDto.isEmpty()){
             return ResponseEntity.noContent().build();
         }
@@ -99,14 +80,11 @@ public class PostController {
     public ResponseEntity<List<PostResponseDto>> getFeed(@RequestParam String username){
         User user = userService.getByUsername(username);
         List<Post> posts = postService.getFeed(user);
-        List<PostResponseDto> postsResponseDto = posts.stream()
-                .map(post -> new PostResponseDto(post.getId(), post.getUser().getUsername(),
-                        post.getMessage(),
-                        post.getTimestamp())).toList();
-        if (postsResponseDto.isEmpty()){
+        var responsePosts = postService.getPostResponseDtos(posts);
+        if (responsePosts.isEmpty()){
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(postsResponseDto);
+        return ResponseEntity.ok(responsePosts);
     }
 
     @PostMapping("/mentions")
@@ -123,13 +101,10 @@ public class PostController {
         User user = userService.getByUsername(username);
         List<Mention> mentions = mentionService.getMentionsByUser(user);
         List<Post> posts = mentions.stream().map(Mention::getPost).toList();
-        List<PostResponseDto> postsResponseDto = posts.stream()
-                .map(post -> new PostResponseDto(post.getId(), post.getUser().getUsername(),
-                        post.getMessage(),
-                        post.getTimestamp())).toList();
-        if (postsResponseDto.isEmpty()){
+        var responsePosts = postService.getPostResponseDtos(posts);
+        if (responsePosts.isEmpty()){
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(postsResponseDto);
+        return ResponseEntity.ok(responsePosts);
     }
 }

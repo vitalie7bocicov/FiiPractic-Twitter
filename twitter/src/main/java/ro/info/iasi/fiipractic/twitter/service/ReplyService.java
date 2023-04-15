@@ -1,8 +1,10 @@
 package ro.info.iasi.fiipractic.twitter.service;
 
 import org.springframework.stereotype.Service;
+import ro.info.iasi.fiipractic.twitter.dto.response.ReplyResponseDto;
 import ro.info.iasi.fiipractic.twitter.model.Post;
 import ro.info.iasi.fiipractic.twitter.model.Reply;
+import ro.info.iasi.fiipractic.twitter.model.User;
 import ro.info.iasi.fiipractic.twitter.repository.ReplyJpaRepository;
 
 import java.util.List;
@@ -23,5 +25,20 @@ public class ReplyService {
 
     public List<Reply> getRepliesByPost(Post post) {
         return replyJpaRepository.findRepliesByParentPostId(post.getId());
+    }
+
+    public List<ReplyResponseDto> getReplyResponseDtos(User user, List<Reply> replies){
+        return replies.stream()
+                .filter(reply -> reply.isPublic()
+                        || reply.getParentPost().getUser().getId().compareTo(user.getId())==0
+                        || reply.getUser().getId().compareTo(user.getId())==0)
+                .map(reply -> new ReplyResponseDto(
+                        reply.getId(),
+                        reply.getUser().getUsername(),
+                        reply.getMessage(),
+                        System.currentTimeMillis(),
+                        reply.getParentPost().getId(),
+                        reply.isPublic()))
+                .toList();
     }
 }
