@@ -7,9 +7,11 @@ import ro.info.iasi.fiipractic.twitter.dto.request.PostCRUDRequestDto;
 import ro.info.iasi.fiipractic.twitter.dto.request.PostRequestDto;
 import ro.info.iasi.fiipractic.twitter.dto.response.PostLikesResponseDto;
 import ro.info.iasi.fiipractic.twitter.dto.response.PostResponseDto;
+import ro.info.iasi.fiipractic.twitter.model.Mention;
 import ro.info.iasi.fiipractic.twitter.model.Post;
 import ro.info.iasi.fiipractic.twitter.model.User;
 import ro.info.iasi.fiipractic.twitter.service.LikeService;
+import ro.info.iasi.fiipractic.twitter.service.MentionService;
 import ro.info.iasi.fiipractic.twitter.service.PostService;
 import ro.info.iasi.fiipractic.twitter.service.UserService;
 
@@ -23,13 +25,15 @@ import java.util.stream.Collectors;
 public class PostController {
     private final UserService userService;
     private final PostService postService;
-
     private final LikeService likeService;
 
-    public PostController(UserService userService, PostService postService, LikeService likeService) {
+    private final MentionService mentionService;
+
+    public PostController(UserService userService, PostService postService, LikeService likeService, MentionService mentionService) {
         this.userService = userService;
         this.postService = postService;
         this.likeService = likeService;
+        this.mentionService = mentionService;
     }
 
     @PostMapping
@@ -95,14 +99,37 @@ public class PostController {
     public ResponseEntity<List<PostResponseDto>> getFeed(@RequestParam String username){
         User user = userService.getByUsername(username);
         List<Post> posts = postService.getFeed(user);
-        List<PostResponseDto> postResponseDtos = posts.stream()
+        List<PostResponseDto> postsResponseDto = posts.stream()
                 .map(post -> new PostResponseDto(post.getId(), post.getUser().getUsername(),
                         post.getMessage(),
                         post.getTimestamp())).toList();
-        if (postResponseDtos.isEmpty()){
+        if (postsResponseDto.isEmpty()){
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(postResponseDtos);
+        return ResponseEntity.ok(postsResponseDto);
     }
 
+    @PostMapping("/mentions")
+    public ResponseEntity<String> saveMention(@RequestBody PostCRUDRequestDto mentionDto){
+        User user = userService.getByUsername(mentionDto.getUsername());
+        Post post = postService.getPostById(mentionDto.getPostId());
+        Mention mention = new Mention(user, post);
+        mentionService.saveMention(mention);
+        return ResponseEntity.ok("The user has been successfully mentioned in the post!");
+    }
+
+    @GetMapping("/mentions")
+    public ResponseEntity<List<PostResponseDto>> getAllMentions(@RequestParam String username){
+        User user = userService.getByUsername(username);
+        List<Mention> mentions = mentionService.getMentionsByUser(user);
+        List<Post> posts = mentions.stream().map(Mention::getPost).toList();
+        List<PostResponseDto> postsResponseDto = posts.stream()
+                .map(post -> new PostResponseDto(post.getId(), post.getUser().getUsername(),
+                        post.getMessage(),
+                        post.getTimestamp())).toList();
+        if (postsResponseDto.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(postsResponseDto);
+    }
 }
