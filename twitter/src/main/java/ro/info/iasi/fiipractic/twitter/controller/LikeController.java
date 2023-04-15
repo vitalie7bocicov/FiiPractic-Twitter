@@ -1,10 +1,7 @@
 package ro.info.iasi.fiipractic.twitter.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ro.info.iasi.fiipractic.twitter.dto.request.PostCRUDRequestDto;
 import ro.info.iasi.fiipractic.twitter.model.Like;
 import ro.info.iasi.fiipractic.twitter.model.Post;
@@ -34,5 +31,14 @@ public class LikeController {
         Like like = new Like(user, post);
         likeService.saveLike(like);
         return ResponseEntity.ok("The like was added to the post successfully.");
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> removeLike(@RequestBody PostCRUDRequestDto likeDto){
+        User user = userService.getByUsername(likeDto.getUsername());
+        Post post = postService.getPostById(likeDto.getPostId());
+        Like like = likeService.getLikeByUserAndPost(user, post);
+        likeService.removeLike(like);
+        return ResponseEntity.ok("The like was successfully removed.");
     }
 }
