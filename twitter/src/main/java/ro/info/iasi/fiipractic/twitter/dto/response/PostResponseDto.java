@@ -1,6 +1,7 @@
 package ro.info.iasi.fiipractic.twitter.dto.response;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 public class PostResponseDto {
@@ -31,4 +32,25 @@ public class PostResponseDto {
         return message;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PostResponseDto that)) return false;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getMessage(), that.getMessage()) && Objects.equals(timestamp, that.timestamp);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getUsername(), getMessage(), timestamp);
+    }
+
+    @Override
+    public String toString() {
+        return "PostResponseDto{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", message='" + message + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }

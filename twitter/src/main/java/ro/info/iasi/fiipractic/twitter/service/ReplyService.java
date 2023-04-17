@@ -36,7 +36,7 @@ public class ReplyService {
                         reply.getId(),
                         reply.getUser().getUsername(),
                         reply.getMessage(),
-                        System.currentTimeMillis(),
+                        reply.getTimestamp(),
                         reply.getParentPost().getId(),
                         reply.isPublic()))
                 .toList();

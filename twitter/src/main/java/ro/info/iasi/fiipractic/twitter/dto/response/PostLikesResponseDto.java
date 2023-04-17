@@ -2,6 +2,7 @@ package ro.info.iasi.fiipractic.twitter.dto.response;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class PostLikesResponseDto {
@@ -44,5 +45,28 @@ public class PostLikesResponseDto {
 
     public void setLikes(List<String> likes) {
         this.likes = likes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PostLikesResponseDto that)) return false;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getMessage(), that.getMessage()) && Objects.equals(getTimestamp(), that.getTimestamp()) && Objects.equals(getLikes(), that.getLikes());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getUsername(), getMessage(), getTimestamp(), getLikes());
+    }
+
+    @Override
+    public String toString() {
+        return "PostLikesResponseDto{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", message='" + message + '\'' +
+                ", timestamp=" + timestamp +
+                ", likes=" + likes +
+                '}';
     }
 }

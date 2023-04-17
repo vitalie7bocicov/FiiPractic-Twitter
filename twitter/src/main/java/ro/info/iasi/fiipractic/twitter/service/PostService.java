@@ -47,16 +47,13 @@ public class PostService {
             List<Post> posts = postJpaRepository.getPostsByUser(followedUser);
             feed.addAll(posts);
         }
-
         Comparator<Post> byTimestampDesc = Comparator.comparing(Post::getTimestamp).reversed();
         feed.sort(byTimestampDesc);
-
         return feed;
     }
 
     public Post getPostById(UUID postId) {
         Post post = postJpaRepository.getPostById(postId);
-
         if (post == null)
             throw new NotFoundException("Post with id '" + postId + "' was not found.");
         return postJpaRepository.getPostById(postId);
@@ -85,7 +82,7 @@ public class PostService {
         return responseDtos;
     }
 
-    public List<PostResponseDto> getPostResponseDtos(List<Post> posts) {
+        public List<PostResponseDto> getPostResponseDtos(List<Post> posts) {
         return posts.stream()
                 .map(post -> new PostResponseDto(post.getId(), post.getUser().getUsername(),
                         post.getMessage(),

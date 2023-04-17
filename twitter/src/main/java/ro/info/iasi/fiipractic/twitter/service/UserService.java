@@ -18,7 +18,6 @@ public class UserService {
 
 
     public User saveUser(User user){
-
         if(userRepository.findByUsername(user.getUsername())!=null)
             throw new UsernameTakenException("Username " + user.getUsername() + " is taken.");
         return userRepository.save(user);
@@ -26,7 +25,6 @@ public class UserService {
 
     public User getByUsername(String username) {
         User user = userRepository.findByUsername(username);
-
         if(user == null)
             throw new NotFoundException("User with username '" + username + "' was not found.");
         return user;
