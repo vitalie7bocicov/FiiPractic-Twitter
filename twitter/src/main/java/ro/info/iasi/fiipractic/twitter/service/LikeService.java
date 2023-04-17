@@ -20,10 +20,10 @@ public class LikeService {
         this.likeJpaRepository = likeJpaRepository;
     }
 
-    public void saveLike(Like like){
+    public Like saveLike(Like like){
         if (likeJpaRepository.findLikeByUserAndPost(like.getUser(), like.getPost())!=null)
             throw new BadRequestException("'"+ like.getUser().getUsername() +"' already liked this post.");
-        likeJpaRepository.save(like);
+        return likeJpaRepository.save(like);
     }
 
     public Like getLikeByUserAndPost(User user, Post post) {
@@ -38,7 +38,7 @@ public class LikeService {
         likeJpaRepository.delete(like);
     }
 
-    public List<Like> getLikesByPost (Post post) {
+    public List<Like> getLikesByPost(Post post) {
         return likeJpaRepository.findLikesByPost(post);
     }
 }

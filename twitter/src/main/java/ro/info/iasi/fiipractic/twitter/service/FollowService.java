@@ -24,13 +24,13 @@ public class FollowService {
         this.userRepository = userRepository;
     }
 
-    public Follow saveFollow(User user, User followed){
-        if (user.getUsername().equals(followed.getUsername()))
-            throw new BadRequestException(" You cannot follow yourself. Please select a different user to follow.");
-        if (followRepository.findFollowByUserAndFollowed(user, followed) != null)
+    public Follow saveFollow(User user, User userToFollow) {
+        if (user.getUsername().equals(userToFollow.getUsername()))
+            throw new BadRequestException("You cannot follow yourself. Please select a different user to follow.");
+        if (followRepository.findFollowByUserAndFollowed(user, userToFollow) != null)
             throw new FollowRelationshipAlreadyExistsException();
-        FollowId followId = new FollowId(user.getId(), followed.getId());
-        Follow follow = new Follow(followId, user, followed, System.currentTimeMillis());
+        FollowId followId = new FollowId(user.getId(), userToFollow.getId());
+        Follow follow = new Follow(followId, user, userToFollow, System.currentTimeMillis());
         return followRepository.save(follow);
     }
 
