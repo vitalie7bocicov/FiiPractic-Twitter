@@ -68,11 +68,12 @@ public class PostServiceTest {
 
     @Test
     public void testGetPostsByUserWithTimeFilter() {
-        Post post1 = new Post(user, "Hello, world!", System.currentTimeMillis());
-        Post post2 = new Post(user, "Goodbye, world!", System.currentTimeMillis());
+        long timestamp = System.currentTimeMillis();
+        Post post1 = new Post(user, "Hello, world!", timestamp);
+        Post post2 = new Post(user, "Goodbye, world!", timestamp);
         List<Post> posts = List.of(post1, post2);
-        when(postRepository.getPostsByUserWithTimeFilter(user, System.currentTimeMillis())).thenReturn(posts);
-        List<Post> retrievedPosts = postService.getPostsByUser(user);
+        when(postRepository.getPostsByUserWithTimeFilter(user, timestamp)).thenReturn(posts);
+        List<Post> retrievedPosts = postService.getPostsByUserWithTimeFilter(user, timestamp);
         assertEquals(posts, retrievedPosts);
     }
 
@@ -108,12 +109,10 @@ public class PostServiceTest {
 
     @Test
     public void testDeletePost() {
-        UUID postId = UUID.randomUUID();
         UUID postUserId = UUID.randomUUID();
         user = mock(User.class);
         Post post = mock(Post.class);
         post.setUser(user);
-        when(postRepository.getPostById(postId)).thenReturn(post);
         when(user.getId()).thenReturn(postUserId);
         when(post.getUser()).thenReturn(user);
         doNothing().when(postRepository).delete(post);
@@ -128,7 +127,6 @@ public class PostServiceTest {
         User user2 = mock(User.class);
         Post post = mock(Post.class);
         post.setUser(user);
-        when(postRepository.getPostById(postId)).thenReturn(post);
         when(user2.getId()).thenReturn(UUID.randomUUID());
         when(user.getId()).thenReturn(postId);
         when(post.getUser()).thenReturn(user);
