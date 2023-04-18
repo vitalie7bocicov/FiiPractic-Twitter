@@ -30,7 +30,7 @@ jobs:
           java-version: "17"
       - name: Test Database Connection
         run: |
-          mysql --host=localhost --port=3306 --user=twitter-client --password=twitter-password -e "SHOW DATABASES;"
+          mysql --host=mysql --port=3306 --user=twitter-client --password=twitter-password -e "SHOW DATABASES;"
 
       # - name: Build with Maven
       #   working-directory: ./twitter
