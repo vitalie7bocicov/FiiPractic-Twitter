@@ -28,9 +28,6 @@ jobs:
         with:
           distribution: "zulu"
           java-version: "17"
-      - name: Test Database Connection
-        run: |
-          mysql --host=127.0.0.1 --port=3306 --user=twitter-client --password=twitter-password -e "SHOW DATABASES;"
 
       - name: Build with Maven
         working-directory: ./twitter
@@ -42,4 +39,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         working-directory: ./twitter
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=vitalie7bocicov_FiiPractic-Twitter -Dsonar.jdbc.url=jdbc:mysql://127.0.0.1:3306/twitter?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=vitalie7bocicov_FiiPractic-Twitter
