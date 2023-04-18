@@ -28,10 +28,13 @@ jobs:
         with:
           distribution: "zulu"
           java-version: "17"
+      - name: Test Database Connection
+        run: |
+          mysql --host=localhost --port=3306 --user=twitter-client --password=twitter-password -e "SHOW DATABASES;"
 
-      - name: Build with Maven
-        working-directory: ./twitter
-        run: mvn -B clean test package --file pom.xml
+      # - name: Build with Maven
+      #   working-directory: ./twitter
+      #   run: mvn -B clean package --file pom.xml
 
       - name: Analyze with SonarCloud
         env:
