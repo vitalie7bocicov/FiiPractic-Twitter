@@ -41,4 +41,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        working-directory: ./twitter
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=vitalie7bocicov_FiiPractic-Twitter -Dsonar.jdbc.url=jdbc:mysql://127.0.0.1:3306/twitter?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
