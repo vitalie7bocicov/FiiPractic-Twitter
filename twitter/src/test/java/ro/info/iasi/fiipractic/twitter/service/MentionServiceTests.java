@@ -1,15 +1,15 @@
-package ro.info.iasi.fiipractic.twitter.serviceTest;
+package ro.info.iasi.fiipractic.twitter.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import ro.info.iasi.fiipractic.twitter.exception.BadRequestException;
 import ro.info.iasi.fiipractic.twitter.model.Mention;
 import ro.info.iasi.fiipractic.twitter.repository.MentionJpaRepository;
-import ro.info.iasi.fiipractic.twitter.service.MentionService;
 
 import java.util.List;
 
@@ -18,8 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class MentionServiceTest {
+@SpringBootTest
+@ExtendWith(MockitoExtension.class)
+public class MentionServiceTests {
 
     @InjectMocks
     MentionService mentionService;
@@ -27,7 +28,7 @@ public class MentionServiceTest {
     @Mock
     MentionJpaRepository  mentionRepository;
 
-    @Before
+    @BeforeEach
 
     public void setUp() {
         mentionService = new MentionService(mentionRepository);

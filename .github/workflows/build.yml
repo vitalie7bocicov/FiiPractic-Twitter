@@ -20,7 +20,7 @@ jobs:
 
       - name: Build with Maven
         working-directory: ./twitter
-        run: mvn -B clean package --file pom.xml
+        run: mvn -B clean test package --file pom.xml
 
       - name: Analyze with SonarCloud
         env:

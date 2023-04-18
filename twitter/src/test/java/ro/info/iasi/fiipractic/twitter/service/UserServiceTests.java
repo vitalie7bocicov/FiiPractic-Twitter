@@ -1,27 +1,29 @@
-package ro.info.iasi.fiipractic.twitter.serviceTest;
+package ro.info.iasi.fiipractic.twitter.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import ro.info.iasi.fiipractic.twitter.exception.NotFoundException;
 import ro.info.iasi.fiipractic.twitter.exception.UsernameTakenException;
 import ro.info.iasi.fiipractic.twitter.model.User;
 import ro.info.iasi.fiipractic.twitter.repository.UserJpaRepository;
-import ro.info.iasi.fiipractic.twitter.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
-public class UserServiceTest {
+
+@SpringBootTest
+@ExtendWith(MockitoExtension.class)
+public class UserServiceTests {
 
     @InjectMocks
     private UserService userService;
@@ -31,7 +33,7 @@ public class UserServiceTest {
 
     private User user;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         userService = new UserService(userRepository);
         user = new User("carl",

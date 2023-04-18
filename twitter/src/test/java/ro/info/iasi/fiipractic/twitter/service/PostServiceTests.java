@@ -1,11 +1,12 @@
-package ro.info.iasi.fiipractic.twitter.serviceTest;
+package ro.info.iasi.fiipractic.twitter.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import ro.info.iasi.fiipractic.twitter.dto.response.PostLikesResponseDto;
 import ro.info.iasi.fiipractic.twitter.dto.response.PostResponseDto;
 import ro.info.iasi.fiipractic.twitter.exception.NotFoundException;
@@ -14,19 +15,17 @@ import ro.info.iasi.fiipractic.twitter.model.Like;
 import ro.info.iasi.fiipractic.twitter.model.Post;
 import ro.info.iasi.fiipractic.twitter.model.User;
 import ro.info.iasi.fiipractic.twitter.repository.PostJpaRepository;
-import ro.info.iasi.fiipractic.twitter.service.FollowService;
-import ro.info.iasi.fiipractic.twitter.service.LikeService;
-import ro.info.iasi.fiipractic.twitter.service.PostService;
 
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
-public class PostServiceTest {
+@SpringBootTest
+@ExtendWith(MockitoExtension.class)
+public class PostServiceTests {
 
     @InjectMocks
     private PostService postService;
@@ -38,7 +37,7 @@ public class PostServiceTest {
     private LikeService likeService;
     private User user;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         postService = new PostService(postRepository, followService, likeService);
         user = new User("carl",
