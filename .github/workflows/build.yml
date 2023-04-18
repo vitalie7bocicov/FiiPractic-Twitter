@@ -15,7 +15,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: twitter
         ports:
-          - 3306/tcp
+          - 3306:3306/tcp
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Checkout code
@@ -36,4 +36,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=vitalie7bocicov_FiiPractic-Twitter -Dsonar.jdbc.url=jdbc:mysql://localhost:3306/twitter?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC -Dsonar.jdbc.username=twitter-client -Dsonar.jdbc.password=twitter-password
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=vitalie7bocicov_FiiPractic-Twitter -Dsonar.jdbc.url=jdbc:mysql://mysql:3306/twitter?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC -Dsonar.jdbc.username=root -Dsonar.jdbc.password=password
