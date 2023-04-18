@@ -19,6 +19,7 @@ jobs:
           java-version: "17"
 
       - name: Build with Maven
+        working-directory: FiiPractic-Twitter/FiiPractic-Twitter/twitter
         run: mvn -B clean package --file pom.xml
 
       - name: Analyze with SonarCloud
