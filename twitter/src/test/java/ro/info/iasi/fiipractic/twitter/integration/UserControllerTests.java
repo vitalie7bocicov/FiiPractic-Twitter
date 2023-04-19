@@ -71,7 +71,6 @@ public class UserControllerTests {
         Statement statement = connection.createStatement();
         statement.executeUpdate("DELETE FROM users");
         statement.close();
-
     }
 
     @Test
