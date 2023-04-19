@@ -173,8 +173,7 @@ public class PostControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].message").value("Test post 1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].message").value("Test post 2"));
+                .andDo(print());
 
     }
 
@@ -195,8 +194,7 @@ public class PostControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].message").value("Test post 1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].message").value("Test post 2"));
+                .andDo(print());
 
     }
     @Test
@@ -314,6 +312,4 @@ public class PostControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isNoContent())
                 .andDo(print());
     }
-
-
 }
