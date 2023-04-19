@@ -1,4 +1,4 @@
-name: Java CI
+name: Twitter Project CI
 
 on:
   push:
@@ -37,6 +37,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         working-directory: ./twitter
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=vitalie7bocicov_FiiPractic-Twitter
