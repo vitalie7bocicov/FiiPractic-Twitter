@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.info.iasi.fiipractic.twitter.dto.request.*;
 import ro.info.iasi.fiipractic.twitter.dto.response.UserResponseDto;
-import ro.info.iasi.fiipractic.twitter.exception.FollowRelationshipAlreadyExistsException;
 import ro.info.iasi.fiipractic.twitter.model.User;
 import ro.info.iasi.fiipractic.twitter.service.FollowService;
 import ro.info.iasi.fiipractic.twitter.service.UserService;
@@ -62,14 +61,11 @@ public class UserController {
     public ResponseEntity<String> followUser(@Valid @RequestBody FollowRequestDto followRequestDto){
         User user = userService.getByUsername(followRequestDto.getUsername());
         User followed = userService.getByUsername(followRequestDto.getUsernameToFollow());
-        try {
-            followService.saveFollow(user, followed);
-            return ResponseEntity.ok("'" + user.getUsername() +"' is now following '"
-                    + followed.getUsername() +"'.");
-        } catch (FollowRelationshipAlreadyExistsException e) {
-            return ResponseEntity.ok("The follow relationship between '"
-                    + user.getUsername() + "' and '" + followed.getUsername() + "' already exists.");
-        }
+
+        followService.saveFollow(user, followed);
+        return ResponseEntity.ok("'" + user.getUsername() +"' is now following '"
+                + followed.getUsername() +"'.");
+
     }
 
     @PostMapping("/unfollow")

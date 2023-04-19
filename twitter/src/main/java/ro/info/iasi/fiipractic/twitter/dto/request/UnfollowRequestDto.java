@@ -10,6 +10,11 @@ public class UnfollowRequestDto {
     @NotBlank(message = "usernameToUnfollow is required.")
     String usernameToUnfollow;
 
+    public UnfollowRequestDto(String username, String usernameToUnfollow) {
+        this.username = username;
+        this.usernameToUnfollow = usernameToUnfollow;
+    }
+
     public String getUsername() {
         return username;
     }

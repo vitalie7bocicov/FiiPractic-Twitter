@@ -8,11 +8,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import ro.info.iasi.fiipractic.twitter.exception.BadRequestException;
-import ro.info.iasi.fiipractic.twitter.exception.FollowRelationshipAlreadyExistsException;
-import ro.info.iasi.fiipractic.twitter.exception.FollowRelationshipNotFound;
+import ro.info.iasi.fiipractic.twitter.model.User;
 import ro.info.iasi.fiipractic.twitter.model.follow.Follow;
 import ro.info.iasi.fiipractic.twitter.model.follow.FollowId;
-import ro.info.iasi.fiipractic.twitter.model.User;
 import ro.info.iasi.fiipractic.twitter.repository.FollowJpaRepository;
 import ro.info.iasi.fiipractic.twitter.repository.UserJpaRepository;
 
@@ -79,7 +77,7 @@ public class FollowServiceTests {
         when(user.getUsername()).thenReturn("username");
         when(userToFollow.getUsername()).thenReturn("usernameToFollow");
         when(followJpaRepository.findFollowByUserAndFollowed(user, userToFollow)).thenReturn(new Follow());
-        assertThrows(FollowRelationshipAlreadyExistsException.class,  () -> followService.saveFollow(user, userToFollow));
+        assertThrows(BadRequestException.class,  () -> followService.saveFollow(user, userToFollow));
     }
 
     @Test
@@ -103,6 +101,6 @@ public class FollowServiceTests {
         when(user.getUsername()).thenReturn("username");
         when(userToFollow.getUsername()).thenReturn("usernameToFollow");
         when(followJpaRepository.findFollowByUserAndFollowed(user, userToFollow)).thenReturn(null);
-        assertThrows(FollowRelationshipNotFound.class,  () -> followService.unFollow(user, userToFollow));
+        assertThrows(BadRequestException.class,  () -> followService.unFollow(user, userToFollow));
     }
 }
