@@ -19,6 +19,16 @@ jobs:
         ports:
           - 3306:3306/tcp
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      mysql-test:
+        image: mysql:8-oracle
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_USER: test-user
+          MYSQL_PASSWORD: test-password
+          MYSQL_DATABASE: twitter-test
+        ports:
+          - 3307:3306/tcp
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
