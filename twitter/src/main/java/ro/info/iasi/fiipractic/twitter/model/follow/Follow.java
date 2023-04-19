@@ -1,4 +1,4 @@
-package ro.info.iasi.fiipractic.twitter.model.Follow;
+package ro.info.iasi.fiipractic.twitter.model.follow;
 
 import jakarta.persistence.*;
 import ro.info.iasi.fiipractic.twitter.model.User;
@@ -56,7 +56,7 @@ public class Follow {
         return followed;
     }
 
-    public void setFollowing(User following) {
+    public void setFollowing(User followed) {
         this.followed = followed;
     }
 

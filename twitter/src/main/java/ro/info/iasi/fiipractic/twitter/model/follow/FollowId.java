@@ -1,4 +1,4 @@
-package ro.info.iasi.fiipractic.twitter.model.Follow;
+package ro.info.iasi.fiipractic.twitter.model.follow;
 
 import jakarta.persistence.Embeddable;
 

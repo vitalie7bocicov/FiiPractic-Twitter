@@ -2,8 +2,8 @@ package ro.info.iasi.fiipractic.twitter.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ro.info.iasi.fiipractic.twitter.model.Follow.Follow;
-import ro.info.iasi.fiipractic.twitter.model.Follow.FollowId;
+import ro.info.iasi.fiipractic.twitter.model.follow.Follow;
+import ro.info.iasi.fiipractic.twitter.model.follow.FollowId;
 import ro.info.iasi.fiipractic.twitter.model.User;
 
 import java.util.List;
