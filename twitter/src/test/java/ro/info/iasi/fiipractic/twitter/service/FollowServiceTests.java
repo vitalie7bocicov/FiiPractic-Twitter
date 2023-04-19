@@ -10,8 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ro.info.iasi.fiipractic.twitter.exception.BadRequestException;
 import ro.info.iasi.fiipractic.twitter.exception.FollowRelationshipAlreadyExistsException;
 import ro.info.iasi.fiipractic.twitter.exception.FollowRelationshipNotFound;
-import ro.info.iasi.fiipractic.twitter.model.Follow.Follow;
-import ro.info.iasi.fiipractic.twitter.model.Follow.FollowId;
+import ro.info.iasi.fiipractic.twitter.model.follow.Follow;
+import ro.info.iasi.fiipractic.twitter.model.follow.FollowId;
 import ro.info.iasi.fiipractic.twitter.model.User;
 import ro.info.iasi.fiipractic.twitter.repository.FollowJpaRepository;
 import ro.info.iasi.fiipractic.twitter.repository.UserJpaRepository;
@@ -49,7 +49,7 @@ public class FollowServiceTests {
 
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         followService = new FollowService(followJpaRepository, userJpaRepository);
         when(user.getId()).thenReturn(UUID.randomUUID());
         when(userToFollow.getId()).thenReturn(UUID.randomUUID());
@@ -58,7 +58,7 @@ public class FollowServiceTests {
     }
 
     @Test
-    public void testSaveFollow() {
+    void testSaveFollow() {
         when(user.getUsername()).thenReturn("username");
         when(userToFollow.getUsername()).thenReturn("usernameToFollow");
         when(followJpaRepository.save(any(Follow.class))).thenReturn(follow);
@@ -67,7 +67,7 @@ public class FollowServiceTests {
     }
 
     @Test
-    public void testSaveFollowWithSameUser() {
+    void testSaveFollowWithSameUser() {
         when(user.getUsername()).thenReturn("username");
         when(userToFollow.getUsername()).thenReturn("usernameToFollow");
         when(userToFollow.getUsername()).thenReturn("username");
@@ -75,7 +75,7 @@ public class FollowServiceTests {
     }
 
     @Test
-    public void testSaveFollowAlreadyExists() {
+    void testSaveFollowAlreadyExists() {
         when(user.getUsername()).thenReturn("username");
         when(userToFollow.getUsername()).thenReturn("usernameToFollow");
         when(followJpaRepository.findFollowByUserAndFollowed(user, userToFollow)).thenReturn(new Follow());
@@ -83,7 +83,7 @@ public class FollowServiceTests {
     }
 
     @Test
-    public void testGetFollowedUsers() {
+    void testGetFollowedUsers() {
         List<User> followedUsers = List.of(userToFollow);
         when(followJpaRepository.findByUser(user)).thenReturn(List.of(follow));
         List<User> result = followService.getFollowedUsers(user);
@@ -91,7 +91,7 @@ public class FollowServiceTests {
     }
 
     @Test
-    public void testUnfollow() {
+    void testUnfollow() {
         when(followJpaRepository.findFollowByUserAndFollowed(user, userToFollow)).thenReturn(follow);
         doNothing().when(followJpaRepository).delete(follow);
         followService.unFollow(user, userToFollow);
@@ -99,7 +99,7 @@ public class FollowServiceTests {
     }
 
     @Test
-    public void testUnfollowNotFound() {
+    void testUnfollowNotFound() {
         when(user.getUsername()).thenReturn("username");
         when(userToFollow.getUsername()).thenReturn("usernameToFollow");
         when(followJpaRepository.findFollowByUserAndFollowed(user, userToFollow)).thenReturn(null);

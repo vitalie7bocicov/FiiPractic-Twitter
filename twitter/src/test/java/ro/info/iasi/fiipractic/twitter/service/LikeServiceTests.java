@@ -33,12 +33,12 @@ public class LikeServiceTests {
     private Like like;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         likeService = new LikeService(likeJpaRepository);
     }
 
     @Test
-    public void testSaveLike() {
+    void testSaveLike() {
         when(like.getPost()).thenReturn(mock(Post.class));
         when(like.getUser()).thenReturn(mock(User.class));
         when(likeJpaRepository.save(like)).thenReturn(like);
@@ -47,7 +47,7 @@ public class LikeServiceTests {
     }
 
     @Test
-    public void testSaveLikeAlreadyExists() {
+    void testSaveLikeAlreadyExists() {
         when(like.getPost()).thenReturn(mock(Post.class));
         when(like.getUser()).thenReturn(mock(User.class));
         when(likeJpaRepository.findLikeByUserAndPost(like.getUser(), like.getPost())).thenReturn(like);
@@ -55,7 +55,7 @@ public class LikeServiceTests {
     }
 
     @Test
-    public void testGetLikeByUserAndPost() {
+    void testGetLikeByUserAndPost() {
         when(like.getPost()).thenReturn(mock(Post.class));
         when(like.getUser()).thenReturn(mock(User.class));
         when(likeJpaRepository.findLikeByUserAndPost(like.getUser(), like.getPost())).thenReturn(like);
@@ -65,7 +65,7 @@ public class LikeServiceTests {
 
 
     @Test
-    public void testGetLikeByUserAndPostNotFound() {
+    void testGetLikeByUserAndPostNotFound() {
         when(like.getPost()).thenReturn(mock(Post.class));
         when(like.getUser()).thenReturn(mock(User.class));
         when(likeJpaRepository.findLikeByUserAndPost(like.getUser(), like.getPost())).thenReturn(null);
@@ -74,7 +74,7 @@ public class LikeServiceTests {
 
 
     @Test
-    public void testRemoveLike() {
+    void testRemoveLike() {
         doNothing().when(likeJpaRepository).delete(like);
         likeService.removeLike(like);
         verify(likeJpaRepository, times(1)).delete(like);
@@ -82,7 +82,7 @@ public class LikeServiceTests {
 
 
     @Test
-    public void testGetLikesByPost() {
+    void testGetLikesByPost() {
         when(like.getPost()).thenReturn(mock(Post.class));
         List<Like> likes = List.of(like);
         when(likeJpaRepository.findLikesByPost(like.getPost())).thenReturn(likes);

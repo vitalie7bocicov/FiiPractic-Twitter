@@ -1,12 +1,8 @@
 package ro.info.iasi.fiipractic.twitter.model;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UuidGenerator;
-import ro.info.iasi.fiipractic.twitter.model.Follow.Follow;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity

@@ -35,7 +35,7 @@ public class MentionServiceTests {
     }
 
     @Test
-    public void testSaveMention(){
+    void testSaveMention(){
         Mention mention = mock(Mention.class);
         when(mentionRepository.save(mention)).thenReturn(mention);
         Mention result = mentionService.saveMention(mention);
@@ -43,14 +43,14 @@ public class MentionServiceTests {
     }
 
     @Test
-    public void testSaveMentionAlreadyExists(){
+    void testSaveMentionAlreadyExists(){
         Mention mention = mock(Mention.class);
         when(mentionRepository.findByUserAndPost(mention.getUser(), mention.getPost())).thenReturn(mention);
         assertThrows(BadRequestException.class, () -> mentionService.saveMention(mention));
     }
 
     @Test
-    public void testGetMentionsByUser(){
+    void testGetMentionsByUser(){
         List<Mention> mentions = List.of(mock(Mention.class));
         when(mentionRepository.findMentionsByUser(mentions.get(0).getUser())).thenReturn(mentions);
         List<Mention> result = mentionService.getMentionsByUser(mentions.get(0).getUser());

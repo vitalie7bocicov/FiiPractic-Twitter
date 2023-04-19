@@ -33,19 +33,19 @@ public class ReplyServiceTests {
     Reply reply;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         replyService = new ReplyService(jpaRepository);
     }
 
     @Test
-    public void saveReplyTest() {
+    void saveReplyTest() {
         when(jpaRepository.save(reply)).thenReturn(reply);
         Reply actual = replyService.saveReply(reply);
         assertEquals(reply, actual);
     }
 
     @Test
-    public void getRepliesByPostTest() {
+    void getRepliesByPostTest() {
         Post post = mock(Post.class);
         UUID parentPostId = UUID.randomUUID();
         List<Reply> replies = List.of(reply);
@@ -56,7 +56,7 @@ public class ReplyServiceTests {
     }
 
     @Test
-    public void testGetReplyResponseDtosAsUser() {
+    void testGetReplyResponseDtosAsUser() {
         // Arrange
         User author = mock(User.class);
         when(author.getId()).thenReturn(UUID.randomUUID());
@@ -84,7 +84,7 @@ public class ReplyServiceTests {
     }
 
     @Test
-    public void testGetReplyResponseDtosAsAuthor() {
+    void testGetReplyResponseDtosAsAuthor() {
         // Arrange
         User author = mock(User.class);
         when(author.getId()).thenReturn(UUID.randomUUID());
@@ -115,7 +115,7 @@ public class ReplyServiceTests {
     }
 
     @Test
-    public void testGetReplyResponseDtosAsOtherUser() {
+    void testGetReplyResponseDtosAsOtherUser() {
         // Arrange
         User author = mock(User.class);
         when(author.getId()).thenReturn(UUID.randomUUID());

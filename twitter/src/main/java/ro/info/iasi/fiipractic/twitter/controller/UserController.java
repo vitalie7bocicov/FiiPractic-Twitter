@@ -3,10 +3,7 @@ package ro.info.iasi.fiipractic.twitter.controller;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ro.info.iasi.fiipractic.twitter.dto.request.FollowRequestDto;
-import ro.info.iasi.fiipractic.twitter.dto.request.UnfollowRequestDto;
-import ro.info.iasi.fiipractic.twitter.dto.request.UserPasswordRequestDto;
-import ro.info.iasi.fiipractic.twitter.dto.request.UserRequestDto;
+import ro.info.iasi.fiipractic.twitter.dto.request.*;
 import ro.info.iasi.fiipractic.twitter.dto.response.UserResponseDto;
 import ro.info.iasi.fiipractic.twitter.exception.FollowRelationshipAlreadyExistsException;
 import ro.info.iasi.fiipractic.twitter.model.User;
@@ -14,7 +11,6 @@ import ro.info.iasi.fiipractic.twitter.service.FollowService;
 import ro.info.iasi.fiipractic.twitter.service.UserService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -33,7 +29,7 @@ public class UserController {
         User user = new User(userRequestDto.getUsername(),
                 userRequestDto.getFirstname(),
                 userRequestDto.getLastname(),
-                userRequestDto.getEmail(),
+                userRequestDto.getPassword(),
                 userRequestDto.getEmail());
         userService.saveUser(user);
         return ResponseEntity.ok("User " + user.getUsername() + " has been registered successfully!");
@@ -58,7 +54,7 @@ public class UserController {
         List<User> foundUsers = userService.searchUsers(username, firstname, lastname);
         List<UserResponseDto> users = foundUsers.stream()
                 .map(user -> new UserResponseDto(user.getUsername(), user.getFirstname(), user.getLastname()))
-                .collect(Collectors.toList());
+                .toList();
         return ResponseEntity.ok(users);
     }
 
@@ -86,17 +82,16 @@ public class UserController {
     }
 
     @PatchMapping("/security")
-    public ResponseEntity<String> changePassword(@Valid @RequestBody UserPasswordRequestDto userRequestDto){
+    public ResponseEntity<String> changePassword(@Valid @RequestBody UserPasswordUpdateRequestDto userRequestDto){
         User user = userService.getByUsername(userRequestDto.getUsername());
-        user.setPassword(userRequestDto.getPassword());
-        userService.updateUser(user);
+        userService.updateUserPassword(user, userRequestDto.getOldPassword(), userRequestDto.getNewPassword());
         return ResponseEntity.ok("The password for '" + user.getUsername() + "' has been successfully updated!");
     }
 
     @DeleteMapping("unregister")
-    public ResponseEntity<String> unregisterUser(@RequestParam String username){
-        User user = userService.getByUsername(username);
-        userService.deleteUser(user);
-        return ResponseEntity.ok("'" + username + "' successfully unregistered!");
+    public ResponseEntity<String> unregisterUser(@Valid @RequestBody UserPasswordRequestDto userRequestDto){
+        User user = userService.getByUsername(userRequestDto.getUsername());
+        userService.deleteUser(user, userRequestDto.getPassword());
+        return ResponseEntity.ok("'" + user.getUsername() + "' successfully unregistered!");
     }
 }

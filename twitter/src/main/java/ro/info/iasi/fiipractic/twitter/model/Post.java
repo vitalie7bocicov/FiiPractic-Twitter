@@ -2,12 +2,9 @@ package ro.info.iasi.fiipractic.twitter.model;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
-import ro.info.iasi.fiipractic.twitter.model.Follow.Follow;
 
 import java.util.List;
 import java.util.UUID;
-
-import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 
 @Entity
 @Table(name = "posts")

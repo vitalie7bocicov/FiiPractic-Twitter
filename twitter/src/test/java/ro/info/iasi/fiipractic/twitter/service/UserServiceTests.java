@@ -7,10 +7,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import ro.info.iasi.fiipractic.twitter.exception.BadRequestException;
 import ro.info.iasi.fiipractic.twitter.exception.NotFoundException;
 import ro.info.iasi.fiipractic.twitter.exception.UsernameTakenException;
 import ro.info.iasi.fiipractic.twitter.model.User;
 import ro.info.iasi.fiipractic.twitter.repository.UserJpaRepository;
+import ro.info.iasi.fiipractic.twitter.util.IPasswordEncoder;
+import ro.info.iasi.fiipractic.twitter.util.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,20 +34,22 @@ public class UserServiceTests {
     @Mock
     private UserJpaRepository userRepository;
 
+    private final IPasswordEncoder passwordEncoder = new PasswordEncoder();
+
     private User user;
 
     @BeforeEach
     public void setUp() {
-        userService = new UserService(userRepository);
+        userService = new UserService(userRepository, new PasswordEncoder());
         user = new User("carl",
                 "Carl",
                 "Johan",
                 "carl.johan@gmail.com",
-                "password123");
+                passwordEncoder.encode("password123"));
     }
 
     @Test
-    public void testSaveUser() {
+    void testSaveUser() {
         when(userRepository.findByUsername(user.getUsername())).thenReturn(null);
         when(userRepository.save(user)).thenReturn(user);
         User savedUser = userService.saveUser(user);
@@ -52,26 +57,26 @@ public class UserServiceTests {
     }
 
     @Test
-    public void testSaveUserUsernameTaken() {
+    void testSaveUserUsernameTaken() {
         when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
         assertThrows(UsernameTakenException.class, () -> userService.saveUser(user));
     }
 
     @Test
-    public void testGetByUsername() {
+    void testGetByUsername() {
         when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
         User foundUser = userService.getByUsername(user.getUsername());
         assertEquals(user, foundUser);
     }
 
     @Test
-    public void testGetByUsernameNotFound() {
+    void testGetByUsernameNotFound() {
         when(userRepository.findByUsername(anyString())).thenReturn(null);
         assertThrows(NotFoundException.class, () -> userService.getByUsername("userTest"));
     }
 
     @Test
-    public void testSearchUsers() {
+    void testSearchUsers() {
         List<User> expectedUsers = new ArrayList<>();
         expectedUsers.add(user);
         when(userRepository.findByUsernameContainingOrFirstnameContainingOrLastnameContaining(anyString(), anyString(), anyString()))
@@ -81,23 +86,39 @@ public class UserServiceTests {
     }
 
     @Test
-    public void testSearchUsersNotFound() {
+    void testSearchUsersNotFound() {
         when(userRepository.findByUsernameContainingOrFirstnameContainingOrLastnameContaining(anyString(), anyString(), anyString()))
                 .thenReturn(null);
         assertThrows(NotFoundException.class, () -> userService.searchUsers("userTest", "", ""));
     }
 
     @Test
-    public void testDeleteUser() {
+    void testDeleteUser() {
         doNothing().when(userRepository).delete(user);
-        userService.deleteUser(user);
+        userService.deleteUser(user, "password123");
         verify(userRepository).delete(user);
     }
 
     @Test
-    public void testUpdateUser() {
+    void testDeleteUserWrongPassword() {
+        assertThrows(BadRequestException.class, () -> userService.deleteUser(user, "password122"));
+    }
+
+    @Test
+    void testUpdateUser() {
         userService.updateUser(user);
         verify(userRepository, times(1)).
                 updateUser(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail(), user.getPassword());
+    }
+    @Test
+    void testUpdateUserPassword() {
+        userService.updateUserPassword(user, "password123",  "password321");
+        verify(userRepository).updateUserPassword(user.getId(), user.getPassword());
+    }
+
+    @Test
+    void testUpdateUserPasswordWrongPassword() {
+        assertThrows(BadRequestException.class,
+                () -> userService.updateUserPassword(user, "password122",  "password321"));
     }
 }

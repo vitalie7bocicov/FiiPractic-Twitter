@@ -38,7 +38,7 @@ public class PostServiceTests {
     private User user;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         postService = new PostService(postRepository, followService, likeService);
         user = new User("carl",
                 "Carl",
@@ -48,7 +48,7 @@ public class PostServiceTests {
     }
 
     @Test
-    public void testSavePost() {
+    void testSavePost() {
         Post post = new Post(user, "Hello, world!", System.currentTimeMillis());
         when(postRepository.save(post)).thenReturn(post);
         Post savedPost = postService.savePost(post);
@@ -56,7 +56,7 @@ public class PostServiceTests {
     }
 
     @Test
-    public void testGetPostsByUser() {
+    void testGetPostsByUser() {
         Post post1 = new Post(user, "Hello, world!", System.currentTimeMillis());
         Post post2 = new Post(user, "Goodbye, world!", System.currentTimeMillis());
         List<Post> posts = List.of(post1, post2);
@@ -66,7 +66,7 @@ public class PostServiceTests {
     }
 
     @Test
-    public void testGetPostsByUserWithTimeFilter() {
+    void testGetPostsByUserWithTimeFilter() {
         long timestamp = System.currentTimeMillis();
         Post post1 = new Post(user, "Hello, world!", timestamp);
         Post post2 = new Post(user, "Goodbye, world!", timestamp);
@@ -77,7 +77,7 @@ public class PostServiceTests {
     }
 
     @Test
-    public void testGetFeed() {
+    void testGetFeed() {
         User followedUser1 = new User("user1", "User 1", "Lastname 1", "user1@gmail.com", "password123");
         User followedUser2 = new User("user2", "User 2", "Lastname 2", "user2@gmail.com", "password123");
         Post post1 = new Post(user, "Hello, world!", System.currentTimeMillis());
@@ -91,7 +91,7 @@ public class PostServiceTests {
     }
 
     @Test
-    public void testGetPostById() {
+    void testGetPostById() {
         UUID postId = UUID.randomUUID();
         Post post = new Post(user, "Hello, world!", System.currentTimeMillis());
         when(postRepository.getPostById(postId)).thenReturn(post);
@@ -100,14 +100,14 @@ public class PostServiceTests {
     }
 
     @Test
-    public void testGetPostByIdNotFound() {
+    void testGetPostByIdNotFound() {
         UUID postId = UUID.randomUUID();
         when(postRepository.getPostById(postId)).thenReturn(null);
         assertThrows(NotFoundException.class, () -> postService.getPostById(postId));
     }
 
     @Test
-    public void testDeletePost() {
+    void testDeletePost() {
         UUID postUserId = UUID.randomUUID();
         user = mock(User.class);
         Post post = mock(Post.class);
@@ -120,7 +120,7 @@ public class PostServiceTests {
     }
 
     @Test
-    public void testDeletePostUnauthorizedUser() {
+    void testDeletePostUnauthorizedUser() {
         UUID postId = UUID.randomUUID();
         user = mock(User.class);
         User user2 = mock(User.class);
@@ -133,7 +133,7 @@ public class PostServiceTests {
     }
 
     @Test
-    public void testGetPostsWithLikes() {
+    void testGetPostsWithLikes() {
         Post post1 = new Post(user, "Hello, world!", System.currentTimeMillis());
         Post post2 = new Post(user, "Goodbye, world!", System.currentTimeMillis());
         List<Post> posts = List.of(post1, post2);
@@ -150,7 +150,7 @@ public class PostServiceTests {
     }
 
     @Test
-    public void getPostResponseDtosTest(){
+    void getPostResponseDtosTest(){
         Post post1 = new Post(user, "Hello, world!", System.currentTimeMillis());
         Post post2 = new Post(user, "Goodbye, world!", System.currentTimeMillis());
         List<Post> posts = List.of(post1, post2);
