@@ -69,11 +69,11 @@ public class PostController {
         else {
             posts = postService.getPostsByUser(user);
         }
-        var PostLikesResponseDto = postService.getPostsWithLikes(posts);
-        if (PostLikesResponseDto.isEmpty()){
+        var postLikesResponseDto = postService.getPostsWithLikes(posts);
+        if (postLikesResponseDto.isEmpty()){
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(PostLikesResponseDto);
+        return ResponseEntity.ok(postLikesResponseDto);
     }
 
     @GetMapping("/feed")

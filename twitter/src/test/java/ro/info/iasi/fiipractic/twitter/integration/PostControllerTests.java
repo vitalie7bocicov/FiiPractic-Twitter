@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class PostControllerTests {
+class PostControllerTests {
 
     @Autowired
     private UserService userService;
@@ -91,7 +91,7 @@ public class PostControllerTests {
     }
 
     @Test
-    public void testSavePost() throws Exception {
+    void testSavePost() throws Exception {
         PostRequestDto postRequestDto = new PostRequestDto(user.getUsername(), post.getMessage());
         mockMvc.perform(MockMvcRequestBuilders.post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -150,7 +150,7 @@ public class PostControllerTests {
     }
 
     @Test
-    public void testGetOwnPosts() throws Exception {
+    void testGetOwnPosts() throws Exception {
         Instant now = Instant.now();
         Post post1 = new Post(user, "Test post 1", now.toEpochMilli());
         Post post2 = new Post(user, "Test post 2", now.minusSeconds(30).toEpochMilli());
@@ -178,7 +178,7 @@ public class PostControllerTests {
     }
 
     @Test
-    public void testGetOwnPostsWithTimeFilter() throws Exception {
+    void testGetOwnPostsWithTimeFilter() throws Exception {
         Instant now = Instant.now();
         Post post1 = new Post(user, "Test post 1", now.toEpochMilli());
         Post post2 = new Post(user, "Test post 2", now.minusSeconds(30).toEpochMilli());
@@ -198,7 +198,7 @@ public class PostControllerTests {
 
     }
     @Test
-    public void testGetOwnPostsWithNotContent() throws Exception {
+    void testGetOwnPostsWithNotContent() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/posts")
                         .param("username", "username")
                         .accept(MediaType.APPLICATION_JSON))
@@ -207,7 +207,7 @@ public class PostControllerTests {
     }
 
     @Test
-    public void testGetFeed() throws Exception {
+    void testGetFeed() throws Exception {
         User user1 = new User("user1", "first1", "last1", "email1@email.com", "password123");
         User user2 = new User("user2", "first2", "last2", "email2@email.com", "password2232");
         userService.saveUser(user1);
@@ -231,7 +231,7 @@ public class PostControllerTests {
     }
 
     @Test
-    public void testGetFeedNoContent() throws Exception {
+    void testGetFeedNoContent() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/posts/feed")
                         .param("username", user.getUsername()))
                 .andExpect(MockMvcResultMatchers.status().isNoContent())
@@ -239,7 +239,7 @@ public class PostControllerTests {
     }
 
     @Test
-    public void testSaveMention() throws Exception {
+    void testSaveMention() throws Exception {
         postService.savePost(post);
 
         PostCRUDRequestDto mentionDto = new PostCRUDRequestDto(user.getUsername(), post.getId());
@@ -251,8 +251,7 @@ public class PostControllerTests {
                 .andDo(print());
     }
 
-    @Test
-    public void testSaveMentionAlreadyExists() throws Exception {
+    @Test public void testSaveMentionAlreadyExists() throws Exception {
         postService.savePost(post);
 
         PostCRUDRequestDto mentionDto = new PostCRUDRequestDto(user.getUsername(), post.getId());
@@ -265,7 +264,7 @@ public class PostControllerTests {
     }
 
     @Test
-    public void testGetAllMentions() throws Exception {
+    void testGetAllMentions() throws Exception {
         User user1 = new User("testUser1",
                 "Test1",
                 "User1",
@@ -305,7 +304,7 @@ public class PostControllerTests {
                 .andDo(print());
     }
     @Test
-    public void testGetAllMentionsNoContent() throws Exception {
+    void testGetAllMentionsNoContent() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/posts/mentions")
                         .param("username", "username"))

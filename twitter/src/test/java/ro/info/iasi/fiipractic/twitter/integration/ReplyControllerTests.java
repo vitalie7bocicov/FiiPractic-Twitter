@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class ReplyControllerTests {
+class ReplyControllerTests {
 
     @Autowired
     private UserService userService;
@@ -88,7 +88,7 @@ public class ReplyControllerTests {
     }
 
     @Test
-    public void testSaveReply() throws Exception {
+    void testSaveReply() throws Exception {
         ReplyRequestDto replyDto = new ReplyRequestDto(user.getUsername(),
                 "reply message",
                 post.getId(),
@@ -102,7 +102,7 @@ public class ReplyControllerTests {
     }
 
     @Test
-    public void testSaveReplyPostNotFound() throws Exception {
+    void testSaveReplyPostNotFound() throws Exception {
         ReplyRequestDto replyDto = new ReplyRequestDto(user.getUsername(),
                 "reply message",
                 UUID.randomUUID(),
@@ -116,7 +116,7 @@ public class ReplyControllerTests {
     }
 
     @Test
-    public void testGetReplies() throws Exception {
+    void testGetReplies() throws Exception {
 
         Reply reply = new Reply(user, "Test reply message", System.currentTimeMillis(), post, true);
         replyService.saveReply(reply);
@@ -132,7 +132,7 @@ public class ReplyControllerTests {
     }
 
     @Test
-    public void testGetRepliesNoContent() throws Exception {
+    void testGetRepliesNoContent() throws Exception {
 
         PostCRUDRequestDto replyDto = new PostCRUDRequestDto(user.getUsername(), post.getId());
 

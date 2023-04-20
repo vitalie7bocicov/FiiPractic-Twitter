@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class LikeControllerTests {
+class LikeControllerTests {
 
     @Autowired
     private LikeService likeService;
@@ -105,7 +105,7 @@ public class LikeControllerTests {
     }
 
     @Test
-    public void testRemoveLike() throws Exception {
+    void testRemoveLike() throws Exception {
         Like like = new Like(user, post);
         likeService.saveLike(like);
 

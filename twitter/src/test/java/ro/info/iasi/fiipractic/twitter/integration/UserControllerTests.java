@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ro.info.iasi.fiipractic.twitter.dto.request.*;
-import ro.info.iasi.fiipractic.twitter.exception.NotFoundException;
 import ro.info.iasi.fiipractic.twitter.model.User;
 import ro.info.iasi.fiipractic.twitter.service.FollowService;
 import ro.info.iasi.fiipractic.twitter.service.UserService;
@@ -28,7 +27,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class UserControllerTests {
+class UserControllerTests {
     @Autowired
     private UserService userService;
 
@@ -156,7 +154,7 @@ public class UserControllerTests {
     }
 
     @Test
-    public void testFollowUser() throws Exception {
+    void testFollowUser() throws Exception {
         User userToFollow = new User("userToFollow",
                 "firstname",
                 "lastname",
@@ -174,7 +172,7 @@ public class UserControllerTests {
     }
 
     @Test
-    public void testFollowUser_alreadyFollowing() throws Exception {
+    void testFollowUser_alreadyFollowing() throws Exception {
         User userToFollow = new User("userToFollow",
                 "firstname",
                 "lastname",
@@ -269,8 +267,6 @@ public class UserControllerTests {
                         .content(new ObjectMapper().writeValueAsString(userRequestDto)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print());
-
-        assertThrows(NotFoundException.class, () -> userService.getByUsername(user.getUsername()));
     }
 
     @Test

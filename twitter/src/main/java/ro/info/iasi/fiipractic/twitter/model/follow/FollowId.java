@@ -34,19 +34,4 @@ public class FollowId implements Serializable {
         return Objects.hash(userId, followedId);
     }
 
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-    }
-
-    public UUID getFollowedId() {
-        return followedId;
-    }
-
-    public void setFollowedId(UUID followingId) {
-        this.followedId = followedId;
-    }
 }

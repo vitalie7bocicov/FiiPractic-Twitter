@@ -63,15 +63,17 @@ public class LikeServiceTests {
         assertEquals(like, result);
     }
 
-
     @Test
     void testGetLikeByUserAndPostNotFound() {
         when(like.getPost()).thenReturn(mock(Post.class));
         when(like.getUser()).thenReturn(mock(User.class));
         when(likeJpaRepository.findLikeByUserAndPost(like.getUser(), like.getPost())).thenReturn(null);
-        assertThrows(NotFoundException.class, () -> likeService.getLikeByUserAndPost(like.getUser(), like.getPost()));
-    }
 
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            likeService.getLikeByUserAndPost(like.getUser(), like.getPost());
+        });
+        assertEquals("Like was not found.", exception.getMessage());
+    }
 
     @Test
     void testRemoveLike() {

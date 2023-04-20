@@ -26,15 +26,7 @@ public class Reply extends Post{
         return parentPost;
     }
 
-    public void setParentPost(Post parentPost) {
-        this.parentPost = parentPost;
-    }
-
     public boolean isPublic() {
         return isPublic;
-    }
-
-    public void setPublic(boolean isPublic) {
-        isPublic = isPublic;
     }
 }
