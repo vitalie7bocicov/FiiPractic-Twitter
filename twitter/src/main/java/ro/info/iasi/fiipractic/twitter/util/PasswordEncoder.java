@@ -7,18 +7,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class PasswordEncoder implements IPasswordEncoder{
 
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder encoder;
 
 
     public PasswordEncoder() {
-        passwordEncoder = new BCryptPasswordEncoder();
+        encoder = new BCryptPasswordEncoder();
     }
 
     public String encode(String password) {
-        return passwordEncoder.encode(password);
+        return encoder.encode(password);
     }
 
     public boolean matches(String plainPassword, String hashedPassword) {
-        return passwordEncoder.matches(plainPassword.trim(), hashedPassword.trim());
+        return encoder.matches(plainPassword.trim(), hashedPassword.trim());
     }
 }
