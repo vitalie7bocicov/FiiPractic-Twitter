@@ -114,7 +114,8 @@ class UserControllerTests {
                 "updated_firstname",
                 "updated_lastname",
                 "updated_email@gmail.com",
-                "updated_password123");
+                "updated_password123"
+                );
         mockMvc.perform(MockMvcRequestBuilders.put("/users/update")
                         .content(new ObjectMapper().writeValueAsString(userRequestDto))
                         .contentType("application/json")
@@ -233,7 +234,7 @@ class UserControllerTests {
     void testChangePassword() throws Exception {
         userService.saveUser(user);
         UserPasswordUpdateRequestDto requestDto = new UserPasswordUpdateRequestDto(user.getUsername(),
-                user.getPassword(),
+                "password123",
                 "newpassword456");
 
         mockMvc.perform(MockMvcRequestBuilders.patch("/users/security")
@@ -260,7 +261,7 @@ class UserControllerTests {
     @Test
     void testUnregisterUser() throws Exception {
         userService.saveUser(user);
-        UserPasswordRequestDto userRequestDto = new UserPasswordRequestDto(user.getUsername(), user.getPassword());
+        UserPasswordRequestDto userRequestDto = new UserPasswordRequestDto(user.getUsername(), "password123");
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/users/unregister")
                         .contentType(MediaType.APPLICATION_JSON)

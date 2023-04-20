@@ -34,7 +34,6 @@ public class UserService {
         User user = userRepository.findByUsername(username);
         if(user == null)
             throw new NotFoundException("User with username '" + username + "' was not found.");
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return user;
     }
 

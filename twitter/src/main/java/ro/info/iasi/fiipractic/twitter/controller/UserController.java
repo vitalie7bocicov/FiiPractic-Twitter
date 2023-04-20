@@ -28,8 +28,9 @@ public class UserController {
         User user = new User(userRequestDto.getUsername(),
                 userRequestDto.getFirstname(),
                 userRequestDto.getLastname(),
-                userRequestDto.getPassword(),
-                userRequestDto.getEmail());
+                userRequestDto.getEmail(),
+                userRequestDto.getPassword()
+                );
         userService.saveUser(user);
         return ResponseEntity.ok("User " + user.getUsername() + " has been registered successfully!");
     }
