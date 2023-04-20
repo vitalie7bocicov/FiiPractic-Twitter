@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class MentionServiceTests {
+class MentionServiceTests {
 
     @InjectMocks
     MentionService mentionService;

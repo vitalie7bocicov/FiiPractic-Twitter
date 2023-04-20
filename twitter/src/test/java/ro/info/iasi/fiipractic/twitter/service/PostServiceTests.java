@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class PostServiceTests {
+class PostServiceTests {
 
     @InjectMocks
     private PostService postService;

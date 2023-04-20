@@ -251,7 +251,8 @@ class PostControllerTests {
                 .andDo(print());
     }
 
-    @Test public void testSaveMentionAlreadyExists() throws Exception {
+    @Test
+    void testSaveMentionAlreadyExists() throws Exception {
         postService.savePost(post);
 
         PostCRUDRequestDto mentionDto = new PostCRUDRequestDto(user.getUsername(), post.getId());

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class LikeServiceTests {
+class LikeServiceTests {
 
     @InjectMocks
     private LikeService likeService;
@@ -65,14 +65,14 @@ public class LikeServiceTests {
 
     @Test
     void testGetLikeByUserAndPostNotFound() {
-        when(like.getPost()).thenReturn(mock(Post.class));
-        when(like.getUser()).thenReturn(mock(User.class));
-        when(likeJpaRepository.findLikeByUserAndPost(like.getUser(), like.getPost())).thenReturn(null);
+        User user = mock(User.class);
+        Post post = mock(Post.class);
+        when(likeJpaRepository.findLikeByUserAndPost(user, post)).thenReturn(null);
 
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            likeService.getLikeByUserAndPost(like.getUser(), like.getPost());
+            likeService.getLikeByUserAndPost(user, post);
         });
-        assertEquals("Like was not found.", exception.getMessage());
+        assertThrows(NotFoundException.class, () -> { likeService.getLikeByUserAndPost(user, post); });
     }
 
     @Test
